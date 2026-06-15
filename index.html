@@ -2123,7 +2123,7 @@
 
           <div class="result-hero">
             <div class="result-badge">${profile.emoji}</div>
-            <div class="result-type-label">나의 칵테일 취향 유형</div>
+            <div class="result-type-label">${isShared ? nickname + '의' : '나의'} 칵테일 취향 유형</div>
             <div class="result-type-name">${profile.name}</div>
             <div class="result-type-desc">${profile.desc}</div>
           </div>
@@ -2155,7 +2155,7 @@
             reviewHtml
               ? `
           <section>
-            <div class="sec-title"><span class="sec-icon">📝</span><h2>내 응답 모아보기</h2><div class="rule"></div></div>
+            <div class="sec-title"><span class="sec-icon">📝</span><h2>${isShared ? nickname + '의' : '내'} 응답 모아보기</h2><div class="rule"></div></div>
             <div class="review-table">${reviewHtml}</div>
           </section>`
               : ''
@@ -2223,26 +2223,34 @@
    URL 인코딩 / 디코딩
    ✅ FIX: URL-safe Base64 적용 (= 패딩 제거, +→-, /→_)
 ════════════════════════════════════════ */
+      // 응답값: like=2, meh=1, no=0, skip/미응답=3
+      // 42자리 숫자 문자열 + 닉네임만 URL에 담아 길이 대폭 단축
       function encodeResult() {
-        const data = { n: nickname, a: {} };
-        for (const [id, val] of Object.entries(answers)) {
-          if (val !== 'skip') data.a[id] = val[0];
-        }
-        return btoa(encodeURIComponent(JSON.stringify(data)))
-          .replace(/=/g, '')
-          .replace(/\+/g, '-')
-          .replace(/\//g, '_'); // ✅ FIX: URL-safe Base64
+        const str = COCKTAILS.map((c) => {
+          const v = answers[c.id];
+          if (v === 'like') return '2';
+          if (v === 'meh') return '1';
+          if (v === 'no') return '0';
+          return '3';
+        }).join('');
+        return encodeURIComponent(nickname) + '.' + str;
       }
 
       function decodeResult(encoded) {
         try {
-          const padded = encoded.replace(/-/g, '+').replace(/_/g, '/'); // ✅ FIX: URL-safe Base64 복원
-          const data = JSON.parse(decodeURIComponent(atob(padded)));
-          const decoded = { nickname: data.n, answers: {} };
-          for (const [id, v] of Object.entries(data.a)) {
-            decoded.answers[id] = v === 'l' ? 'like' : v === 'm' ? 'meh' : 'no';
+          const dotIdx = encoded.indexOf('.');
+          if (dotIdx === -1) return null;
+          const nick = decodeURIComponent(encoded.slice(0, dotIdx));
+          const str = encoded.slice(dotIdx + 1);
+          if (str.length !== COCKTAILS.length) return null;
+          const decodedAnswers = {};
+          for (let i = 0; i < COCKTAILS.length; i++) {
+            const ch = str[i];
+            if (ch === '2') decodedAnswers[COCKTAILS[i].id] = 'like';
+            else if (ch === '1') decodedAnswers[COCKTAILS[i].id] = 'meh';
+            else if (ch === '0') decodedAnswers[COCKTAILS[i].id] = 'no';
           }
-          return decoded;
+          return { nickname: nick, answers: decodedAnswers };
         } catch {
           return null;
         }
