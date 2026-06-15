@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>칵테일 취향 찾기</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+:root {
+  --bg:       #0f0c10;
+  --surface:  #1a1520;
+  --surface2: #221c2a;
+  --border:   #2e2438;
+  --amber:    #c9942a;
+  --amber-lt: #e8b84b;
+  --rose:     #c45c72;
+  --sage:     #7aaa8a;
+  --slate:    #8b90a8;
+  --txt:      #ede8f0;
+  --muted:    #7b7485;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 공통 유틸 ── */
+.hidden { display: none !important; }
+
+/* ══════════════════════════════
+   SCREEN 1: INTRO
+══════════════════════════════ */
+#screen-intro {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  text-align: center;
+}
+.intro-glow {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,148,42,.25) 0%, transparent 70%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 52px;
+  margin-bottom: 32px;
+}
+#screen-intro h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 5vw, 38px);
+  font-weight: 400;
+  line-height: 1.3;
+  margin-bottom: 14px;
+}
+#screen-intro h1 em { font-style: italic; color: var(--amber-lt); }
+#screen-intro p {
+  font-size: 14px; color: var(--muted);
+  max-width: 340px; line-height: 1.8; margin-bottom: 36px;
+}
+.btn-start {
+  padding: 14px 36px;
+  background: linear-gradient(135deg, #4a3820, #2e2010);
+  border: 1px solid var(--amber);
+  border-radius: 100px;
+  color: var(--amber-lt);
+  font-size: 15px; font-weight: 500;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+.btn-start:hover { opacity: .8; }
+
+/* ══════════════════════════════
+   SCREEN 2: QUIZ
+══════════════════════════════ */
+#screen-quiz {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 540px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 16px 32px;
+}
+
+/* 상단 바 */
+.quiz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0 14px;
+  gap: 12px;
+}
+.progress-wrap { flex: 1; }
+.progress-label {
+  font-size: 11px; color: var(--muted);
+  letter-spacing: .1em; margin-bottom: 6px;
+}
+.progress-bar-bg {
+  height: 3px; background: var(--surface2); border-radius: 100px;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--amber), var(--amber-lt));
+  border-radius: 100px;
+  transition: width .4s ease;
+}
+.btn-back {
+  background: none; border: 1px solid var(--border);
+  border-radius: 8px; color: var(--muted);
+  font-size: 12px; padding: 6px 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer; white-space: nowrap;
+  transition: border-color .15s, color .15s;
+}
+.btn-back:hover { border-color: var(--muted); color: var(--txt); }
+.btn-back:disabled { opacity: .3; cursor: default; }
+
+/* 카드 */
+.card-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0 24px;
+}
+.cocktail-card {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  animation: cardIn .3s ease;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.card-visual {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 72px;
+  position: relative;
+  overflow: hidden;
+}
+.card-visual::before {
+  content: '';
+  position: absolute; inset: 0;
+  opacity: .55;
+}
+.card-body { padding: 22px 24px 24px; }
+.card-spirit {
+  font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 8px;
+}
+.card-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 600; margin-bottom: 10px;
+}
+.card-desc {
+  font-size: 13px; color: var(--muted);
+  line-height: 1.75; margin-bottom: 16px;
+}
+.card-tags {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.ctag {
+  font-size: 11px; padding: 3px 10px;
+  border-radius: 100px; border: 1px solid;
+}
+.ctag-herb   { background: rgba(122,170,138,.12); color: var(--sage);     border-color: rgba(122,170,138,.25); }
+.ctag-spice  { background: rgba(201,148,42,.12);  color: var(--amber-lt); border-color: rgba(201,148,42,.25); }
+.ctag-citrus { background: rgba(232,184,75,.12);  color: #d4b86a;         border-color: rgba(232,184,75,.25); }
+.ctag-sweet  { background: rgba(196,92,114,.12);  color: var(--rose);     border-color: rgba(196,92,114,.25); }
+.ctag-dry    { background: rgba(139,144,168,.12); color: var(--slate);    border-color: rgba(139,144,168,.25); }
+.ctag-fruity { background: rgba(180,130,200,.12); color: #c0a0e0;         border-color: rgba(180,130,200,.25); }
+.ctag-sour   { background: rgba(180,200,100,.12); color: #b0c870;         border-color: rgba(180,200,100,.25); }
+.ctag-nutty  { background: rgba(160,120,80,.12);  color: #c0946a;         border-color: rgba(160,120,80,.25); }
+.ctag-savory { background: rgba(100,160,120,.12); color: #80c090;         border-color: rgba(100,160,120,.25); }
+.ctag-bitter { background: rgba(80,80,120,.12);   color: #9090c0;         border-color: rgba(80,80,120,.25); }
+.ctag-tropical{ background: rgba(220,180,80,.12); color: #d4b050;         border-color: rgba(220,180,80,.25); }
+.ctag-fizzy  { background: rgba(140,180,220,.12); color: #90b8d8;         border-color: rgba(140,180,220,.25); }
+
+/* 버튼 그룹 */
+.action-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.act-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 12px 6px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.act-btn .act-icon { font-size: 20px; line-height: 1; }
+.act-btn:hover { border-color: var(--muted); color: var(--txt); }
+
+.act-btn.no     { --c: var(--rose); }
+.act-btn.meh    { --c: var(--slate); }
+.act-btn.like   { --c: var(--amber-lt); }
+.act-btn.skip   { --c: var(--muted); }
+
+.act-btn.no:hover   { border-color: var(--rose);     color: var(--rose);     background: rgba(196,92,114,.08); }
+.act-btn.meh:hover  { border-color: var(--slate);    color: var(--slate);    background: rgba(139,144,168,.08); }
+.act-btn.like:hover { border-color: var(--amber-lt); color: var(--amber-lt); background: rgba(232,184,75,.08); }
+
+/* ══════════════════════════════
+   SCREEN 3: RESULT
+══════════════════════════════ */
+#screen-result {
+  max-width: 680px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 40px 20px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.result-hero {
+  text-align: center;
+  padding: 40px 0 0;
+}
+.result-badge {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,148,42,.2) 0%, transparent 70%);
+  border: 1px solid var(--border);
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+.result-type-label {
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 10px;
+}
+.result-type-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 600; margin-bottom: 10px;
+}
+.result-type-name em { font-style: italic; color: var(--amber-lt); }
+.result-type-desc {
+  font-size: 13px; color: var(--muted); line-height: 1.8;
+  max-width: 420px; margin: 0 auto;
+}
+
+/* 섹션 타이틀 */
+.sec-title {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 18px;
+}
+.sec-title .sec-icon { font-size: 16px; }
+.sec-title h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 600;
+}
+.sec-title .rule { flex: 1; height: 1px; background: var(--border); }
+
+/* 키워드 스코어 */
+.keyword-scores {
+  display: flex; flex-direction: column; gap: 10px;
+}
+.ks-row {
+  display: flex; align-items: center; gap: 12px;
+}
+.ks-label {
+  width: 90px; font-size: 12px; color: var(--muted); flex-shrink: 0;
+}
+.ks-bar-bg {
+  flex: 1; height: 6px;
+  background: var(--surface2); border-radius: 100px; overflow: hidden;
+}
+.ks-bar-fill {
+  height: 100%; border-radius: 100px;
+  transition: width 1s cubic-bezier(.4,0,.2,1);
+}
+.ks-score {
+  width: 32px; text-align: right;
+  font-size: 12px; color: var(--muted); flex-shrink: 0;
+}
+
+/* 추천 카드 */
+.rec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.rec-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  transition: border-color .15s;
+}
+.rec-card:hover { border-color: var(--amber); }
+.rec-card .rec-emoji { font-size: 28px; margin-bottom: 10px; }
+.rec-card .rec-name {
+  font-size: 14px; font-weight: 700; margin-bottom: 6px;
+}
+.rec-card .rec-reason {
+  font-size: 12px; color: var(--muted); line-height: 1.6;
+}
+.rec-card .rec-reason strong { color: var(--amber-lt); font-weight: 500; }
+
+/* 리뷰 테이블 */
+.review-table {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.review-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border-radius: 8px;
+  font-size: 13px;
+}
+.review-row .rr-name { font-weight: 500; }
+.review-row .rr-note { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.rtag-like { color: var(--amber-lt); font-size: 11px; }
+.rtag-meh  { color: var(--slate);    font-size: 11px; }
+.rtag-no   { color: var(--rose);     font-size: 11px; }
+
+/* 다시하기 */
+.restart-wrap { text-align: center; }
+.btn-restart {
+  padding: 12px 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  color: var(--muted);
+  font-size: 13px; font-weight: 500;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  transition: all .2s;
+}
+.btn-restart:hover { border-color: var(--amber); color: var(--amber-lt); }
+
+/* ── 레이더 차트 ── */
+.radar-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 0;
+}
+.radar-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.radar-block-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+}
+.radar-svg { overflow: visible; }
+
+/* 폴리곤 그리기 애니메이션 */
+@keyframes radarIn {
+  from { opacity: 0; transform: scale(.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.radar-fill { animation: radarIn .6s cubic-bezier(.4,0,.2,1) both; }
+
+/* ── 반응형 ── */
+@media (max-width: 480px) {
+  .action-buttons { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .act-btn { padding: 10px 4px; font-size: 10px; }
+  .act-btn .act-icon { font-size: 18px; }
+  .rec-grid { grid-template-columns: 1fr 1fr; }
+  .radar-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ SCREEN 1: INTRO ══ -->
+<div id="screen-intro">
+  <div class="intro-glow">🍸</div>
+  <h1>나의 칵테일<br><em>취향 찾기</em></h1>
+  <p>대표 칵테일 42종에 반응해보세요.<br>취향을 분석해 딱 맞는 칵테일을 추천해드립니다.</p>
+  <button class="btn-start" onclick="startQuiz()">시작하기</button>
+</div>
+
+<!-- ══ SCREEN 2: QUIZ ══ -->
+<div id="screen-quiz" style="display:none;">
+  <div class="quiz-header">
+    <div class="progress-wrap">
+      <div class="progress-label" id="progress-label">0 / 28</div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+      </div>
+    </div>
+    <button class="btn-back" id="btn-back" onclick="goBack()" disabled>← 뒤로</button>
+  </div>
+
+  <div class="card-area">
+    <div class="cocktail-card" id="cocktail-card">
+      <!-- JS로 렌더링 -->
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <button class="act-btn no"   onclick="answer('no')">
+      <span class="act-icon">👎</span>별로
+    </button>
+    <button class="act-btn meh"  onclick="answer('meh')">
+      <span class="act-icon">😐</span>무난
+    </button>
+    <button class="act-btn like" onclick="answer('like')">
+      <span class="act-icon">👍</span>좋아
+    </button>
+    <button class="act-btn skip" onclick="answer('skip')">
+      <span class="act-icon">⏭</span>모름
+    </button>
+  </div>
+</div>
+
+<!-- ══ SCREEN 3: RESULT ══ -->
+<div id="screen-result" style="display:none;">
+  <!-- JS로 렌더링 -->
+</div>
+
+<script>
+/* ════════════════════════════════════════
+   DATA: 칵테일 42종 (스피릿별 순서 고정, 각 7종)
+   tags: 취향 분석에 사용되는 향/맛 키워드
+   ※ Firebase 배포 시 이 데이터를 Firestore에 저장하고
+     results 컬렉션에 {userId, answers, timestamp} 저장하면 됨
+════════════════════════════════════════ */
+const COCKTAILS = [
+  // ── 위스키 (7) ──
+  { id:'old-fashioned', spirit:'위스키', name:'올드 패션드',       emoji:'🥃',
+    color:'#1e1508',
+    desc:'버번 + 비터스 + 설탕. 위스키 그 자체의 복합향을 즐기는 미니멀한 드링크. 오렌지 껍질 향이 포인트.',
+    tags:['ctag-bitter','ctag-dry','ctag-spice'], labels:['비터','드라이','향신료'] },
+  { id:'whisky-sour',   spirit:'위스키', name:'위스키 사워',       emoji:'🥃',
+    color:'#2a1a06',
+    desc:'버번 + 레몬주스 + 달걀 흰자. 새콤한 산미와 위스키의 바닐라·카라멜향이 만나는 균형 잡힌 클래식.',
+    tags:['ctag-sour','ctag-citrus'], labels:['산미','시트러스'] },
+  { id:'manhattan',     spirit:'위스키', name:'맨해튼',            emoji:'🥃',
+    color:'#1a1206',
+    desc:'라이 위스키 + 스위트 베르무트 + 비터스. 진한 체리향과 허브 드라이함이 공존하는 격조 있는 칵테일.',
+    tags:['ctag-dry','ctag-bitter','ctag-herb'], labels:['드라이','비터','허브'] },
+  { id:'rusty-nail',    spirit:'위스키', name:'러스티 네일',       emoji:'🥃',
+    color:'#2a1f0a',
+    desc:'위스키에 드람뷔(꿀·허브·향신료 리큐르)를 블렌드한 클래식. 스모키함 속에 깊은 허브 단맛이 천천히 피어오름.',
+    tags:['ctag-herb','ctag-spice','ctag-nutty'], labels:['허브','향신료','견과류'] },
+  { id:'mint-julep',    spirit:'위스키', name:'민트 줄렙',         emoji:'🥃',
+    color:'#0e1a10',
+    desc:'버번 + 생민트 + 설탕. 강한 민트향이 위스키의 온기를 감싸는 여름 클래식. 허브 향 입문용.',
+    tags:['ctag-herb','ctag-sweet'], labels:['허브','단맛'] },
+  { id:'irish-coffee',  spirit:'위스키', name:'아이리시 커피',     emoji:'🥃',
+    color:'#140e06',
+    desc:'아이리시 위스키 + 커피 + 설탕 + 생크림. 따뜻한 커피 위에 차가운 크림이 떠 있는 핫 칵테일의 대명사.',
+    tags:['ctag-bitter','ctag-sweet'], labels:['비터','단맛'] },
+  { id:'godfather',     spirit:'위스키', name:'갓파더',            emoji:'🥃',
+    color:'#1e1408',
+    desc:'위스키 + 아마레또. 아몬드의 달콤향이 위스키를 부드럽게 감싸는 2-ingredient 클래식. 올드 패션드보다 달고 부드러움.',
+    tags:['ctag-nutty','ctag-sweet','ctag-dry'], labels:['견과류','단맛','드라이'] },
+
+  // ── 진 (7) ──
+  { id:'gin-tonic',     spirit:'진', name:'진 토닉',             emoji:'🌿',
+    color:'#0e1612',
+    desc:'진 + 토닉워터 + 라임. 주니퍼 향의 드라이함과 토닉의 쌉쌀한 탄산. 가장 대중적인 진 입문 칵테일.',
+    tags:['ctag-dry','ctag-citrus','ctag-fizzy'], labels:['드라이','시트러스','탄산'] },
+  { id:'negroni',       spirit:'진', name:'네그로니',            emoji:'🌿',
+    color:'#1a0c0e',
+    desc:'진 + 캄파리 + 스위트 베르무트. 쓴맛과 허브향이 강렬하게 충돌. 처음엔 낯설지만 중독성 있는 구조.',
+    tags:['ctag-bitter','ctag-herb','ctag-dry'], labels:['비터','허브','드라이'] },
+  { id:'tom-collins',   spirit:'진', name:'톰 콜린스',           emoji:'🌿',
+    color:'#0a1410',
+    desc:'진 + 레몬주스 + 설탕 + 소다. 가볍고 상큼한 롱드링크. 진의 향이 레몬 탄산에 녹아드는 여름 칵테일.',
+    tags:['ctag-citrus','ctag-sour','ctag-fizzy'], labels:['시트러스','산미','탄산'] },
+  { id:'martini',       spirit:'진', name:'마티니',              emoji:'🌿',
+    color:'#0c1018',
+    desc:'진 + 드라이 베르무트. 칵테일의 왕. 극도로 드라이하고 차갑고 강렬함. 올리브 하나가 전부인 미니멀리즘.',
+    tags:['ctag-dry','ctag-bitter'], labels:['드라이','비터'] },
+  { id:'aviation',      spirit:'진', name:'에비에이션',           emoji:'🌿',
+    color:'#0e1020',
+    desc:'진 + 크렘 드 비올레트 + 마라스키노 + 레몬. 제비꽃향의 연보라빛 칵테일. 꽃향기와 산미의 조합.',
+    tags:['ctag-citrus','ctag-sour','ctag-herb'], labels:['시트러스','산미','허브'] },
+  { id:'last-word',     spirit:'진', name:'라스트 워드',          emoji:'🌿',
+    color:'#0e1a0a',
+    desc:'진 + 그린 샤르트뢰즈 + 마라스키노 + 라임 등비율. 허브·체리·시트러스가 완전 대등하게 싸우는 희귀한 균형.',
+    tags:['ctag-herb','ctag-sour','ctag-citrus'], labels:['허브','산미','시트러스'] },
+  { id:'gimlet',        spirit:'진', name:'김렛',                emoji:'🌿',
+    color:'#0a1608',
+    desc:'진 + 라임주스 + 설탕. 마티니만큼 심플하지만 산미가 있어 마시기 훨씬 쉬움. 레이먼드 챈들러의 소설에도 등장하는 클래식.',
+    tags:['ctag-citrus','ctag-sour','ctag-dry'], labels:['시트러스','산미','드라이'] },
+
+  // ── 보드카 (7) ──
+  { id:'moscow-mule',   spirit:'보드카', name:'모스코 뮬',        emoji:'🍸',
+    color:'#0a1208',
+    desc:'보드카 + 진저비어 + 라임. 생강의 알싸한 향과 라임 산미. 구리 컵에 마시는 게 국룰인 상쾌한 드링크.',
+    tags:['ctag-spice','ctag-citrus','ctag-fizzy'], labels:['향신료','시트러스','탄산'] },
+  { id:'bloody-mary',   spirit:'보드카', name:'블러디 메리',      emoji:'🍸',
+    color:'#1a0808',
+    desc:'보드카 + 토마토주스 + 핫소스 + 우스터소스. 짭짤하고 매콤한 세이보리 칵테일. 주스라기보단 식사에 가까운 느낌.',
+    tags:['ctag-savory','ctag-spice'], labels:['세이보리','향신료'] },
+  { id:'cosmopolitan',  spirit:'보드카', name:'코스모폴리탄',      emoji:'🍸',
+    color:'#1a0810',
+    desc:'보드카 + 트리플섹 + 크랜베리 + 라임. 핑크빛 외모와 달리 의외로 새콤하고 드라이한 편. 영화 섹스앤더시티 픽.',
+    tags:['ctag-citrus','ctag-sour','ctag-fruity'], labels:['시트러스','산미','과일'] },
+  { id:'espresso-martini', spirit:'보드카', name:'에스프레소 마티니', emoji:'🍸',
+    color:'#100c08',
+    desc:'보드카 + 에스프레소 + 커피 리큐르. 진한 커피향과 쓴맛, 달콤한 리큐르가 폼처럼 층을 이루는 세련된 나이트 드링크.',
+    tags:['ctag-bitter','ctag-sweet'], labels:['비터','단맛'] },
+  { id:'vodka-tonic',   spirit:'보드카', name:'보드카 토닉',       emoji:'🍸',
+    color:'#0a1016',
+    desc:'보드카 + 토닉워터 + 라임. 진 토닉보다 무향에 가까워 부담 없이 마실 수 있는 입문 롱드링크.',
+    tags:['ctag-dry','ctag-citrus','ctag-fizzy'], labels:['드라이','시트러스','탄산'] },
+  { id:'white-russian', spirit:'보드카', name:'화이트 러시안',     emoji:'🍸',
+    color:'#120e08',
+    desc:'보드카 + 칼루아 + 우유(또는 크림). 커피 리큐르의 달콤한 쓴맛과 크림의 부드러움. 영화 빅 레보스키의 그 칵테일.',
+    tags:['ctag-sweet','ctag-bitter'], labels:['단맛','비터'] },
+  { id:'sex-on-beach',  spirit:'보드카', name:'섹스 온 더 비치',   emoji:'🍸',
+    color:'#1a0e08',
+    desc:'보드카 + 피치 슈납스 + 오렌지주스 + 크랜베리. 달달하고 과일향 가득한 대표적인 트로피컬 롱드링크.',
+    tags:['ctag-fruity','ctag-sweet','ctag-tropical'], labels:['과일','단맛','트로피컬'] },
+
+  // ── 럼 (7) ──
+  { id:'mojito',        spirit:'럼', name:'모히토',              emoji:'🥥',
+    color:'#0a180e',
+    desc:'럼 + 민트 + 라임 + 설탕 + 소다. 민트의 청량함과 라임 산미가 탄산 속에 펼쳐지는 가장 사랑받는 여름 칵테일.',
+    tags:['ctag-herb','ctag-citrus','ctag-fizzy'], labels:['허브','시트러스','탄산'] },
+  { id:'daiquiri',      spirit:'럼', name:'다이키리',            emoji:'🥥',
+    color:'#0e1a10',
+    desc:'화이트럼 + 라임주스 + 설탕. 3가지 재료만으로 완성되는 완벽한 삼위일체. 깔끔한 산미와 럼의 청아한 향.',
+    tags:['ctag-citrus','ctag-sour'], labels:['시트러스','산미'] },
+  { id:'pina-colada',   spirit:'럼', name:'피나 콜라다',          emoji:'🥥',
+    color:'#1a1408',
+    desc:'럼 + 코코넛 크림 + 파인애플주스. 달콤한 코코넛과 파인애플의 조합. 열대 해변을 떠올리게 하는 여름의 상징.',
+    tags:['ctag-tropical','ctag-sweet','ctag-fruity'], labels:['트로피컬','단맛','과일'] },
+  { id:'mai-tai',       spirit:'럼', name:'마이 타이',           emoji:'🥥',
+    color:'#1a1008',
+    desc:'럼 + 오르자(아몬드시럽) + 오렌지 리큐르 + 라임. 트로피컬 위에 견과류 단맛이 깔리는 하와이안 클래식.',
+    tags:['ctag-tropical','ctag-nutty','ctag-citrus'], labels:['트로피컬','견과류','시트러스'] },
+  { id:'dark-stormy',   spirit:'럼', name:'다크 앤 스토미',      emoji:'🥥',
+    color:'#100e08',
+    desc:'다크럼 + 진저비어 + 라임. 럼의 당밀·바닐라향과 생강의 매운향이 강하게 충돌. 개성 강한 롱드링크.',
+    tags:['ctag-spice','ctag-sweet','ctag-fizzy'], labels:['향신료','단맛','탄산'] },
+  { id:'rum-sour',      spirit:'럼', name:'럼 사워',             emoji:'🥥',
+    color:'#1a1206',
+    desc:'다크럼 + 레몬주스 + 설탕 + 달걀 흰자. 위스키 사워와 비슷한 구조지만 럼의 당밀향이 더 달콤하고 열대적.',
+    tags:['ctag-sour','ctag-citrus','ctag-sweet'], labels:['산미','시트러스','단맛'] },
+  { id:'cuba-libre',    spirit:'럼', name:'쿠바 리브레',          emoji:'🥥',
+    color:'#160e06',
+    desc:'럼 + 콜라 + 라임. 잭콕의 럼 버전. 단순하지만 라임이 더해져 콜라의 단맛이 산뜻하게 정리되는 차이가 있음.',
+    tags:['ctag-sweet','ctag-citrus','ctag-fizzy'], labels:['단맛','시트러스','탄산'] },
+
+  // ── 데킬라 (7) ──
+  { id:'margarita',     spirit:'데킬라', name:'마가리타',         emoji:'🌵',
+    color:'#141a08',
+    desc:'데킬라 + 트리플섹 + 라임. 소금 테두리에 시트러스 산미. 세계에서 가장 많이 팔리는 칵테일 중 하나.',
+    tags:['ctag-citrus','ctag-sour'], labels:['시트러스','산미'] },
+  { id:'tequila-sunrise', spirit:'데킬라', name:'데킬라 선라이즈', emoji:'🌵',
+    color:'#1a0e08',
+    desc:'데킬라 + 오렌지주스 + 그레나딘. 붉은 노을빛 층이 아름다운 비주얼. 오렌지와 달콤한 그레나딘의 조합.',
+    tags:['ctag-fruity','ctag-sweet'], labels:['과일','단맛'] },
+  { id:'paloma',        spirit:'데킬라', name:'팔로마',           emoji:'🌵',
+    color:'#0e1810',
+    desc:'데킬라 + 자몽주스 + 소다. 쓴 자몽향과 데킬라의 흙내음이 탄산 속에 어우러지는 멕시코 국민 칵테일.',
+    tags:['ctag-citrus','ctag-bitter','ctag-fizzy'], labels:['시트러스','비터','탄산'] },
+  { id:'tommy-margarita', spirit:'데킬라', name:'토미스 마가리타', emoji:'🌵',
+    color:'#141a08',
+    desc:'데킬라 + 라임 + 아가베 시럽. 아가베 특유의 흙내음·허브향을 강조한 프리미엄 마가리타. 트리플섹 없이 더 순수.',
+    tags:['ctag-citrus','ctag-herb','ctag-sour'], labels:['시트러스','허브','산미'] },
+  { id:'ranch-water',   spirit:'데킬라', name:'랜치 워터',        emoji:'🌵',
+    color:'#0a1416',
+    desc:'데킬라 + 라임 + 탄산수. 마가리타에서 단맛을 모두 뺀 텍사스 하이볼. 미네랄한 데킬라 향이 그대로.',
+    tags:['ctag-dry','ctag-citrus','ctag-fizzy'], labels:['드라이','시트러스','탄산'] },
+  { id:'mezcal-negroni', spirit:'데킬라', name:'메스칼 네그로니',  emoji:'🌵',
+    color:'#1a1008',
+    desc:'메스칼 + 캄파리 + 스위트 베르무트. 네그로니에 훈연향이 더해진 버전. 스모키함과 쓴맛이 공존.',
+    tags:['ctag-bitter','ctag-herb','ctag-spice'], labels:['비터','허브','향신료'] },
+  { id:'batanga',       spirit:'데킬라', name:'바탕가',           emoji:'🌵',
+    desc:'데킬라 + 콜라 + 라임 + 소금. 멕시코의 쿠바 리브레. 소금이 콜라의 단맛을 잡아주어 생각보다 드라이한 느낌.',
+    color:'#181008',
+    tags:['ctag-sweet','ctag-citrus','ctag-fizzy'], labels:['단맛','시트러스','탄산'] },
+
+  // ── 리큐르·기타 (7) ──
+  { id:'aperol-spritz', spirit:'리큐르', name:'아페롤 스프리츠',  emoji:'🍊',
+    color:'#1a0e06',
+    desc:'아페롤 + 프로세코 + 소다. 쌉쌀한 오렌지향과 가벼운 탄산. 이탈리아식 아페리티보(식전주)의 대명사.',
+    tags:['ctag-bitter','ctag-citrus','ctag-fizzy'], labels:['비터','시트러스','탄산'] },
+  { id:'amaretto-sour', spirit:'리큐르', name:'아마레또 사워',     emoji:'🍊',
+    color:'#1a1006',
+    desc:'아마레또 + 레몬주스 + 달걀 흰자. 아몬드의 진한 단향과 레몬 산미의 대비. 폼이 올라와 부드럽게 마무리.',
+    tags:['ctag-nutty','ctag-sour','ctag-citrus'], labels:['견과류','산미','시트러스'] },
+  { id:'penicillin',    spirit:'리큐르', name:'페니실린',          emoji:'🍊',
+    color:'#1a1008',
+    desc:'스카치 + 아일레이 위스키 + 레몬 + 생강 시럽. 스모키향 위에 생강과 레몬이 층을 이루는 현대 클래식.',
+    tags:['ctag-spice','ctag-sour','ctag-herb'], labels:['향신료','산미','허브'] },
+  { id:'chartreuse-smash', spirit:'리큐르', name:'샤르트뢰즈 스매시', emoji:'🍊',
+    color:'#0c1606',
+    desc:'그린 샤르트뢰즈 + 레몬 + 설탕 + 민트. 130가지 허브로 만든 리큐르가 주인공. 강렬한 초록 허브향과 산미.',
+    tags:['ctag-herb','ctag-sour','ctag-spice'], labels:['허브','산미','향신료'] },
+  { id:'porn-star',     spirit:'리큐르', name:'포르노스타 마티니', emoji:'🍊',
+    color:'#1a0e0c',
+    desc:'바닐라 보드카 + 패션프루트 리큐르 + 패션프루트. 달콤하고 향긋한 열대과일향. 샴페인 샷이 함께 나오는 영국 최인기 칵테일.',
+    tags:['ctag-fruity','ctag-sweet','ctag-tropical'], labels:['과일','단맛','트로피컬'] },
+  { id:'midori-sour',   spirit:'리큐르', name:'미도리 사워',       emoji:'🍊',
+    color:'#0e1a08',
+    desc:'미도리(멜론 리큐르) + 레몬주스 + 달걀 흰자. 형광 초록빛의 비주얼. 달콤한 멜론향에 산미가 더해져 부드럽게 마무리.',
+    tags:['ctag-fruity','ctag-sweet','ctag-sour'], labels:['과일','단맛','산미'] },
+  { id:'baileys-coffee', spirit:'리큐르', name:'베일리스 커피',    emoji:'🍊',
+    color:'#120c08',
+    desc:'베일리스 아이리시 크림 + 커피. 크리미하고 달콤한 아이리시 크림이 커피와 어우러지는 디저트 드링크.',
+    tags:['ctag-sweet','ctag-bitter'], labels:['단맛','비터'] },
+];
+
+/* ════════════════════════════════════════
+   STATE
+════════════════════════════════════════ */
+let queue = [];           // 출제 순서
+let current = 0;          // 현재 인덱스
+let answers = {};         // { cocktailId: 'like'|'meh'|'no'|'skip' }
+let history = [];         // 뒤로가기용 스택
+
+/* ════════════════════════════════════════
+   QUIZ LOGIC
+════════════════════════════════════════ */
+function startQuiz() {
+  queue = [...COCKTAILS];
+  current = 0;
+  answers = {};
+  history = [];
+  show('screen-quiz');
+  renderCard();
+}
+
+function renderCard() {
+  const c = queue[current];
+  const total = queue.length;
+
+  document.getElementById('progress-label').textContent = `${current + 1} / ${total}`;
+  document.getElementById('progress-bar').style.width = `${((current + 1) / total) * 100}%`;
+  document.getElementById('btn-back').disabled = history.length === 0;
+
+  const tagsHtml = c.tags.map((cls, i) =>
+    `<span class="ctag ${cls}">${c.labels[i]}</span>`
+  ).join('');
+
+  document.getElementById('cocktail-card').innerHTML = `
+    <div class="card-visual" style="background:${c.color};">
+      ${c.emoji}
+    </div>
+    <div class="card-body">
+      <div class="card-spirit">${c.spirit}</div>
+      <div class="card-name">${c.name}</div>
+      <div class="card-desc">${c.desc}</div>
+      <div class="card-tags">${tagsHtml}</div>
+    </div>
+  `;
+
+  // 애니메이션 재실행
+  const card = document.getElementById('cocktail-card');
+  card.style.animation = 'none';
+  card.offsetHeight; // reflow
+  card.style.animation = '';
+}
+
+function answer(val) {
+  const c = queue[current];
+  if (val !== 'skip') answers[c.id] = val;
+
+  history.push({ idx: current, answerId: c.id, val });
+  current++;
+
+  if (current >= queue.length) {
+    showResult();
+  } else {
+    renderCard();
+  }
+}
+
+function goBack() {
+  if (history.length === 0) return;
+  const last = history.pop();
+  delete answers[last.answerId];
+  current = last.idx;
+  renderCard();
+}
+
+/* ════════════════════════════════════════
+   RESULT LOGIC
+════════════════════════════════════════ */
+
+/* 취향 키워드별 점수 계산 */
+const KEYWORD_COLORS = {
+  '허브':   { bar: '#7aaa8a', label: 'var(--sage)' },
+  '향신료': { bar: '#e8b84b', label: 'var(--amber-lt)' },
+  '시트러스':{ bar: '#d4b86a', label: '#d4b86a' },
+  '산미':   { bar: '#b0c870', label: '#b0c870' },
+  '견과류': { bar: '#c0946a', label: '#c0946a' },
+  '드라이': { bar: '#8b90a8', label: 'var(--slate)' },
+  '비터':   { bar: '#9090c0', label: '#9090c0' },
+  '단맛':   { bar: '#c45c72', label: 'var(--rose)' },
+  '과일':   { bar: '#c0a0e0', label: '#c0a0e0' },
+  '트로피컬':{ bar: '#d4b050', label: '#d4b050' },
+  '세이보리':{ bar: '#80c090', label: '#80c090' },
+  '탄산':   { bar: '#90b8d8', label: '#90b8d8' },
+};
+
+function calcKeywordScores() {
+  const scores = {};
+  for (const [id, val] of Object.entries(answers)) {
+    const c = COCKTAILS.find(x => x.id === id);
+    if (!c) continue;
+    const weight = val === 'like' ? 2 : val === 'meh' ? 0.5 : -1;
+    c.labels.forEach(lbl => {
+      scores[lbl] = (scores[lbl] || 0) + weight;
+    });
+  }
+  return scores;
+}
+
+/* 취향 유형 판정 */
+function getProfile(scores) {
+  const top = Object.entries(scores).sort((a,b) => b[1]-a[1]).slice(0,3).map(x=>x[0]);
+  const liked = COCKTAILS.filter(c => answers[c.id] === 'like');
+
+  if (top.includes('허브') && top.includes('향신료'))
+    return { emoji:'🌿', name:'<em>허브·향신료</em> 탐험가', desc:'복합적인 향에서 즐거움을 찾는 타입. 한 가지 맛으로 설명되지 않는, 마실수록 달라지는 칵테일을 좋아합니다.' };
+  if (top.includes('산미') && top.includes('시트러스'))
+    return { emoji:'🍋', name:'<em>새콤한 산미</em> 추구형', desc:'레몬·라임이 이끄는 새콤한 구조를 선호합니다. 단맛보다 산미로 마무리되는 칵테일이 취향.' };
+  if (top.includes('드라이') && top.includes('비터'))
+    return { emoji:'🥃', name:'<em>드라이·비터</em> 정통파', desc:'단맛 없이 씁쓸하고 드라이한 정통 클래식을 즐기는 타입. 칵테일 바에서 바텐더에게 신뢰받는 주문 스타일.' };
+  if (top.includes('과일') && top.includes('트로피컬'))
+    return { emoji:'🍍', name:'<em>트로피컬·과일</em> 러버', desc:'밝고 화사한 과일향을 사랑하는 타입. 여름 바닷가가 생각나는 화려한 색감의 칵테일이 딱.' };
+  if (top.includes('단맛'))
+    return { emoji:'🍬', name:'<em>달콤한 향</em> 선호형', desc:'단맛이 중심이 되는 칵테일을 편안하게 즐기는 타입. 너무 강하지 않고 부드럽게 마무리되는 음료를 선호.' };
+  if (top.includes('탄산') && top.includes('시트러스'))
+    return { emoji:'🫧', name:'<em>가볍고 상쾌한</em> 롱드링크파', desc:'탄산과 시트러스의 조합을 가장 편하게 느끼는 타입. 부담 없이 즐기는 롱드링크가 딱 맞습니다.' };
+  if (top.includes('세이보리') || top.includes('비터'))
+    return { emoji:'🍅', name:'<em>개성파</em> 세이보리·비터', desc:'달지 않고 복잡한 풍미를 즐기는 개성 있는 타입. 일반적이지 않은 칵테일에서 즐거움을 찾습니다.' };
+  return { emoji:'🍸', name:'<em>열린 입맛</em>의 탐험가', desc:'특정 취향보다 다양한 칵테일을 고루 즐기는 타입. 어떤 칵테일을 마셔도 나름의 즐거움을 찾을 수 있습니다.' };
+}
+
+/* 추천 칵테일 (응답한 것 제외, 상위 키워드 기반) */
+function getRecommendations(scores) {
+  const answeredIds = new Set(Object.keys(answers));
+  const topKws = Object.entries(scores).sort((a,b) => b[1]-a[1]).slice(0,4).map(x=>x[0]);
+
+  // 아직 안 마셔봤거나 skip한 칵테일 중 추천
+  const candidates = COCKTAILS.filter(c => !answeredIds.has(c.id) || answers[c.id] === 'skip');
+
+  const scored = candidates.map(c => {
+    let s = 0;
+    c.labels.forEach(lbl => { if (topKws.includes(lbl)) s++; });
+    return { c, s };
+  }).sort((a,b) => b.s-a.s).slice(0,4);
+
+  // 그래도 없으면 전체 liked 기반
+  if (scored.length === 0) {
+    return COCKTAILS.filter(c => answers[c.id] === 'like').slice(0,4).map(c => ({
+      c, reason: '이미 좋아하는 칵테일과 비슷한 구조'
+    }));
+  }
+
+  return scored.map(({c}) => {
+    const matchKws = c.labels.filter(l => topKws.includes(l));
+    return { c, reason: matchKws.length > 0 ? `<strong>${matchKws.join(' · ')}</strong> 취향과 매칭` : '취향 프로필 기반 추천' };
+  });
+}
+
+/* ════════════════════════════════════════
+   RADAR CHART HELPERS
+════════════════════════════════════════ */
+
+/* SVG 정육각형 좌표 계산 */
+function hexPoint(cx, cy, r, i, n) {
+  const angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+  return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+}
+
+function makeRadar({ cx, cy, r, labels, values, color, labelColor }) {
+  const n = labels.length;
+  const levels = 4;
+
+  // 격자선
+  let gridLines = '';
+  for (let l = 1; l <= levels; l++) {
+    const pts = Array.from({length: n}, (_, i) => hexPoint(cx, cy, r * l / levels, i, n));
+    gridLines += `<polygon points="${pts.map(p=>p.join(',')).join(' ')}"
+      fill="none" stroke="#2e2438" stroke-width="1"/>`;
+  }
+
+  // 축선
+  let axes = '';
+  for (let i = 0; i < n; i++) {
+    const [x, y] = hexPoint(cx, cy, r, i, n);
+    axes += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}"
+      stroke="#2e2438" stroke-width="1"/>`;
+  }
+
+  // 데이터 폴리곤
+  const pts = values.map((v, i) => hexPoint(cx, cy, r * Math.max(0, Math.min(1, v)), i, n));
+  const polyPts = pts.map(p => p.join(',')).join(' ');
+
+  // 라벨
+  let labelsSvg = '';
+  for (let i = 0; i < n; i++) {
+    const pad = 22;
+    const [lx, ly] = hexPoint(cx, cy, r + pad, i, n);
+    const anchor = lx < cx - 4 ? 'end' : lx > cx + 4 ? 'start' : 'middle';
+    labelsSvg += `<text x="${lx}" y="${ly}" text-anchor="${anchor}"
+      dominant-baseline="middle"
+      font-size="10" fill="${labelColor || '#7b7485'}"
+      font-family="Noto Sans KR, sans-serif">${labels[i]}</text>`;
+  }
+
+  // 꼭짓점 점
+  const dots = pts.map(([x,y]) =>
+    `<circle cx="${x}" cy="${y}" r="3" fill="${color}" opacity=".9"/>`
+  ).join('');
+
+  return `
+    ${gridLines}
+    ${axes}
+    <polygon points="${polyPts}"
+      fill="${color}" fill-opacity=".18"
+      stroke="${color}" stroke-width="1.5"
+      class="radar-fill"/>
+    ${dots}
+    ${labelsSvg}
+  `;
+}
+
+/* 취향 6각형: 6축으로 키워드 점수 매핑 */
+function calcTasteRadar(scores) {
+  const norm = (keys) => {
+    const vals = keys.map(k => Math.max(0, scores[k] || 0));
+    const sum = vals.reduce((a,b) => a+b, 0);
+    const maxPossible = keys.length * 4;
+    return Math.min(1, sum / maxPossible);
+  };
+  return [
+    norm(['허브','향신료','세이보리']),  // 향·복합
+    norm(['단맛','트로피컬','과일']),     // 단맛·과일
+    norm(['산미','시트러스']),            // 산미
+    norm(['비터','드라이']),              // 쓴맛·드라이
+    norm(['견과류']),                    // 바디·무게감
+    norm(['탄산','시트러스']),           // 청량감
+  ];
+}
+
+/* 스피릿 6각형: 각 스피릿 칵테일들의 가중 평균 */
+function calcSpiritRadar() {
+  const spirits = ['위스키','진','보드카','럼','데킬라','리큐르'];
+  return spirits.map(sp => {
+    const group = COCKTAILS.filter(c => c.spirit === sp);
+    let total = 0, count = 0;
+    group.forEach(c => {
+      const v = answers[c.id];
+      if (v === 'like') { total += 1; count++; }
+      else if (v === 'meh') { total += 0.5; count++; }
+      else if (v === 'no') { total += 0; count++; }
+    });
+    return count === 0 ? 0 : total / count;
+  });
+}
+
+function buildRadarSVG(labels, values, color, size) {
+  const cx = size / 2, cy = size / 2;
+  const r = size * 0.33;
+  const inner = makeRadar({ cx, cy, r, labels, values, color, labelColor: '#8b90a8' });
+  return `<svg class="radar-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${inner}</svg>`;
+}
+
+
+function showResult() {
+  const scores = calcKeywordScores();
+  const profile = getProfile(scores);
+  const recs = getRecommendations(scores);
+
+  // 키워드 정규화 (0~100)
+  const vals = Object.values(scores);
+  const maxVal = Math.max(...vals, 1);
+  const minVal = Math.min(...vals, 0);
+  const normPct = key => {
+    const v = scores[key] || 0;
+    return Math.round(Math.max(0, (v - minVal) / (maxVal - minVal + 0.01)) * 100);
+  };
+
+  // 리뷰 테이블
+  const liked = COCKTAILS.filter(c => answers[c.id] === 'like');
+  const mehs  = COCKTAILS.filter(c => answers[c.id] === 'meh');
+  const nos   = COCKTAILS.filter(c => answers[c.id] === 'no');
+
+  const reviewHtml = [
+    ...liked.map(c => `<div class="review-row"><div><div class="rr-name">${c.name}</div><div class="rr-note">${c.spirit}</div></div><span class="rtag-like">👍 좋아함</span></div>`),
+    ...mehs.map(c  => `<div class="review-row"><div><div class="rr-name">${c.name}</div><div class="rr-note">${c.spirit}</div></div><span class="rtag-meh">😐 무난</span></div>`),
+    ...nos.map(c   => `<div class="review-row"><div><div class="rr-name">${c.name}</div><div class="rr-note">${c.spirit}</div></div><span class="rtag-no">👎 별로</span></div>`),
+  ].join('');
+
+  // 키워드 바
+  const topKeywords = Object.entries(scores)
+    .sort((a,b) => b[1]-a[1])
+    .filter(([,v]) => v > 0)
+    .slice(0,8);
+
+  const kwBarsHtml = topKeywords.map(([key]) => {
+    const pct = normPct(key);
+    const col = KEYWORD_COLORS[key]?.bar || '#a89a7a';
+    return `
+      <div class="ks-row">
+        <span class="ks-label">${key}</span>
+        <div class="ks-bar-bg">
+          <div class="ks-bar-fill" style="width:${pct}%; background:${col};"></div>
+        </div>
+        <span class="ks-score">${pct}</span>
+      </div>`;
+  }).join('');
+
+  // 추천 카드
+  const recHtml = recs.map(({c, reason}) => `
+    <div class="rec-card">
+      <div class="rec-emoji">${c.emoji}</div>
+      <div class="rec-name">${c.name}</div>
+      <div class="rec-reason">${reason}</div>
+    </div>
+  `).join('');
+
+  // ── 레이더 차트 ──
+  const tasteVals   = calcTasteRadar(scores);
+  const tasteLabels = ['향·복합', '단맛·과일', '산미', '쓴맛·드라이', '바디감', '청량감'];
+  const tasteSVG    = buildRadarSVG(tasteLabels, tasteVals, '#c9942a', 220);
+
+  const spiritVals   = calcSpiritRadar();
+  const spiritLabels = ['위스키', '진', '보드카', '럼', '데킬라', '리큐르'];
+  const spiritSVG    = buildRadarSVG(spiritLabels, spiritVals, '#7aaa8a', 220);
+
+  document.getElementById('screen-result').innerHTML = `
+    <div class="result-hero">
+      <div class="result-badge">${profile.emoji}</div>
+      <div class="result-type-label">나의 칵테일 취향 유형</div>
+      <div class="result-type-name">${profile.name}</div>
+      <div class="result-type-desc">${profile.desc}</div>
+    </div>
+
+    <section>
+      <div class="sec-title">
+        <span class="sec-icon">🕸️</span>
+        <h2>취향 레이더</h2>
+        <div class="rule"></div>
+      </div>
+      <div class="radar-row">
+        <div class="radar-block">
+          <div class="radar-block-title">🍋 맛·향 프로필</div>
+          ${tasteSVG}
+        </div>
+        <div class="radar-block">
+          <div class="radar-block-title">🥃 베이스 스피릿 선호도</div>
+          ${spiritSVG}
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-title">
+        <span class="sec-icon">📊</span>
+        <h2>취향 키워드 분석</h2>
+        <div class="rule"></div>
+      </div>
+      <div class="keyword-scores">${kwBarsHtml || '<p style="color:var(--muted);font-size:13px;">응답 데이터가 부족합니다.</p>'}</div>
+    </section>
+
+    <section>
+      <div class="sec-title">
+        <span class="sec-icon">🍹</span>
+        <h2>다음에 마셔볼 칵테일 추천</h2>
+        <div class="rule"></div>
+      </div>
+      <div class="rec-grid">${recHtml || '<p style="color:var(--muted);font-size:13px;">추천할 칵테일을 찾지 못했습니다.</p>'}</div>
+    </section>
+
+    ${reviewHtml ? `
+    <section>
+      <div class="sec-title">
+        <span class="sec-icon">📝</span>
+        <h2>내 응답 모아보기</h2>
+        <div class="rule"></div>
+      </div>
+      <div class="review-table">${reviewHtml}</div>
+    </section>` : ''}
+
+    <div class="restart-wrap">
+      <button class="btn-restart" onclick="restartQuiz()">↩ 다시 하기</button>
+    </div>
+  `;
+
+  show('screen-result');
+}
+
+function restartQuiz() {
+  show('screen-intro');
+}
+
+/* ════════════════════════════════════════
+   UTIL
+════════════════════════════════════════ */
+const DISPLAY = {
+  'screen-intro':  'flex',
+  'screen-quiz':   'flex',
+  'screen-result': 'block',
+};
+function show(id) {
+  ['screen-intro','screen-quiz','screen-result'].forEach(s => {
+    document.getElementById(s).style.display = (s === id) ? DISPLAY[s] : 'none';
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ════════════════════════════════════════
+   FIREBASE 연동 메모 (배포 시 참고)
+   ────────────────────────────────────────
+   1. firebase init → hosting + firestore
+   2. 결과 저장:
+      import { getFirestore, collection, addDoc } from 'firebase/firestore';
+      const db = getFirestore(app);
+      await addDoc(collection(db, 'results'), {
+        answers,        // { cocktailId: 'like'|'meh'|'no' }
+        scores,         // 키워드 점수
+        profileType,    // 취향 유형 이름
+        timestamp: serverTimestamp(),
+        userId: sessionId // 익명 식별자 (optional)
+      });
+   3. 집계 대시보드: 칵테일별 like/meh/no 비율 실시간 집계
+════════════════════════════════════════ */
+</script>
+</body>
+</html>
