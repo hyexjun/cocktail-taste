@@ -92,18 +92,84 @@ body {
   transition: opacity .2s;
 }
 .btn-start:hover { opacity: .8; }
+.btn-start:disabled { opacity: .35; cursor: default; }
+
+/* 닉네임 입력 */
+.nickname-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  width: 100%;
+  max-width: 280px;
+}
+.nickname-input {
+  width: 100%;
+  padding: 12px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  color: var(--txt);
+  font-size: 15px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 400;
+  text-align: center;
+  outline: none;
+  transition: border-color .2s;
+}
+.nickname-input::placeholder { color: var(--muted); }
+.nickname-input:focus { border-color: var(--amber); }
+.nickname-hint {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: .05em;
+}
+
+/* 공유 결과 배너 */
+.shared-banner {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--amber);
+  border-radius: 12px;
+  padding: 18px 20px;
+  text-align: center;
+  margin-bottom: 0;
+}
+.shared-banner .sb-label {
+  font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 8px;
+}
+.shared-banner .sb-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 600; margin-bottom: 14px;
+}
+.shared-banner .sb-name em { font-style: italic; color: var(--amber-lt); }
+.btn-try {
+  padding: 10px 28px;
+  background: linear-gradient(135deg, #4a3820, #2e2010);
+  border: 1px solid var(--amber);
+  border-radius: 100px;
+  color: var(--amber-lt);
+  font-size: 13px; font-weight: 500;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+.btn-try:hover { opacity: .8; }
 
 /* ══════════════════════════════
    SCREEN 2: QUIZ
 ══════════════════════════════ */
 #screen-quiz {
-  flex: 1;
   display: flex;
   flex-direction: column;
   max-width: 540px;
   margin: 0 auto;
   width: 100%;
-  padding: 0 16px 32px;
+  padding: 0 16px 0;
+  height: 100vh;
+  height: 100dvh;
 }
 
 /* 상단 바 */
@@ -111,8 +177,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 0 14px;
+  padding: 16px 0 12px;
   gap: 12px;
+  flex-shrink: 0;
 }
 .progress-wrap { flex: 1; }
 .progress-label {
@@ -142,10 +209,12 @@ body {
 /* 카드 */
 .card-area {
   flex: 1;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 0 24px;
+  padding: 8px 0 12px;
+  overflow: hidden;
 }
 .cocktail-card {
   width: 100%;
@@ -160,11 +229,11 @@ body {
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 .card-visual {
-  height: 180px;
+  height: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 72px;
+  font-size: 64px;
   position: relative;
   overflow: hidden;
 }
@@ -173,18 +242,18 @@ body {
   position: absolute; inset: 0;
   opacity: .55;
 }
-.card-body { padding: 22px 24px 24px; }
+.card-body { padding: 16px 20px 18px; }
 .card-spirit {
   font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--amber); margin-bottom: 8px;
+  color: var(--amber); margin-bottom: 6px;
 }
 .card-name {
   font-family: 'Playfair Display', serif;
-  font-size: 26px; font-weight: 600; margin-bottom: 10px;
+  font-size: 24px; font-weight: 600; margin-bottom: 8px;
 }
 .card-desc {
   font-size: 13px; color: var(--muted);
-  line-height: 1.75; margin-bottom: 16px;
+  line-height: 1.7; margin-bottom: 12px;
 }
 .card-tags {
   display: flex; flex-wrap: wrap; gap: 6px;
@@ -211,6 +280,8 @@ body {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
+  flex-shrink: 0;
+  padding: 0 0 20px;
 }
 .act-btn {
   display: flex;
@@ -249,12 +320,12 @@ body {
   padding: 40px 20px 80px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 48px;
 }
 
 .result-hero {
   text-align: center;
-  padding: 40px 0 0;
+  padding: 32px 0 0;
 }
 .result-badge {
   display: inline-flex;
@@ -273,29 +344,31 @@ body {
 .result-type-name {
   font-family: 'Playfair Display', serif;
   font-size: clamp(22px, 4vw, 30px);
-  font-weight: 600; margin-bottom: 10px;
+  font-weight: 600; margin-bottom: 12px;
+  line-height: 1.4;
 }
 .result-type-name em { font-style: italic; color: var(--amber-lt); }
 .result-type-desc {
-  font-size: 13px; color: var(--muted); line-height: 1.8;
+  font-size: 14px; color: var(--muted); line-height: 1.9;
   max-width: 420px; margin: 0 auto;
 }
 
 /* 섹션 타이틀 */
 .sec-title {
   display: flex; align-items: center; gap: 10px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 .sec-title .sec-icon { font-size: 16px; }
 .sec-title h2 {
   font-family: 'Playfair Display', serif;
   font-size: 18px; font-weight: 600;
+  white-space: nowrap;
 }
 .sec-title .rule { flex: 1; height: 1px; background: var(--border); }
 
 /* 키워드 스코어 */
 .keyword-scores {
-  display: flex; flex-direction: column; gap: 10px;
+  display: flex; flex-direction: column; gap: 12px;
 }
 .ks-row {
   display: flex; align-items: center; gap: 12px;
@@ -335,7 +408,7 @@ body {
   font-size: 14px; font-weight: 700; margin-bottom: 6px;
 }
 .rec-card .rec-reason {
-  font-size: 12px; color: var(--muted); line-height: 1.6;
+  font-size: 12px; color: var(--muted); line-height: 1.7;
 }
 .rec-card .rec-reason strong { color: var(--amber-lt); font-weight: 500; }
 
@@ -348,16 +421,16 @@ body {
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 12px;
-  padding: 10px 14px;
+  padding: 11px 14px;
   background: var(--surface);
   border-radius: 8px;
   font-size: 13px;
 }
-.review-row .rr-name { font-weight: 500; }
-.review-row .rr-note { font-size: 11px; color: var(--muted); margin-top: 1px; }
-.rtag-like { color: var(--amber-lt); font-size: 11px; }
-.rtag-meh  { color: var(--slate);    font-size: 11px; }
-.rtag-no   { color: var(--rose);     font-size: 11px; }
+.review-row .rr-name { font-weight: 500; line-height: 1.4; }
+.review-row .rr-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.rtag-like { color: var(--amber-lt); font-size: 11px; white-space: nowrap; }
+.rtag-meh  { color: var(--slate);    font-size: 11px; white-space: nowrap; }
+.rtag-no   { color: var(--rose);     font-size: 11px; white-space: nowrap; }
 
 /* 다시하기 */
 .restart-wrap { text-align: center; }
@@ -411,12 +484,12 @@ body {
 /* ── 저장·공유 버튼 ── */
 .action-row {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   justify-content: center;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 .btn-action {
-  padding: 12px 24px;
+  padding: 10px 20px;
   border-radius: 100px;
   border: 1px solid var(--border);
   background: var(--surface);
@@ -426,6 +499,7 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
   cursor: pointer;
   transition: all .2s;
+  white-space: nowrap;
 }
 .btn-save:hover  { border-color: var(--amber); color: var(--amber-lt); }
 .btn-share:hover { border-color: var(--sage);  color: var(--sage); }
@@ -447,7 +521,19 @@ body {
   <div class="intro-glow">🍸</div>
   <h1>나의 칵테일<br><em>취향 찾기</em></h1>
   <p>대표 칵테일 42종에 반응해보세요.<br>취향을 분석해 딱 맞는 칵테일을 추천해드립니다.</p>
-  <button class="btn-start" onclick="startQuiz()">시작하기</button>
+  <div class="nickname-wrap">
+    <input
+      id="nickname-input"
+      class="nickname-input"
+      type="text"
+      placeholder="닉네임을 입력하세요"
+      maxlength="12"
+      oninput="onNicknameInput()"
+      onkeydown="if(event.key==='Enter') tryStart()"
+    />
+    <div class="nickname-hint">결과 공유 시 표시됩니다</div>
+  </div>
+  <button class="btn-start" id="btn-start" onclick="tryStart()" disabled>시작하기</button>
 </div>
 
 <!-- ══ SCREEN 2: QUIZ ══ -->
@@ -685,6 +771,20 @@ let queue = [];           // 출제 순서
 let current = 0;          // 현재 인덱스
 let answers = {};         // { cocktailId: 'like'|'meh'|'no'|'skip' }
 let history = [];         // 뒤로가기용 스택
+let nickname = '';        // 사용자 닉네임
+
+/* 닉네임 입력 핸들러 */
+function onNicknameInput() {
+  const val = document.getElementById('nickname-input').value.trim();
+  document.getElementById('btn-start').disabled = val.length === 0;
+}
+
+function tryStart() {
+  const val = document.getElementById('nickname-input').value.trim();
+  if (!val) return;
+  nickname = val;
+  startQuiz();
+}
 
 /* ════════════════════════════════════════
    QUIZ LOGIC
@@ -938,7 +1038,7 @@ function buildRadarSVG(labels, values, color, size) {
 }
 
 
-function showResult() {
+function showResult(isShared = false) {
   const scores = calcKeywordScores();
   const profile = getProfile(scores);
   const recs = getRecommendations(scores);
@@ -1001,6 +1101,13 @@ function showResult() {
   const spiritSVG    = buildRadarSVG(spiritLabels, spiritVals, '#7aaa8a', 220);
 
   document.getElementById('screen-result').innerHTML = `
+    ${isShared ? `
+    <div class="shared-banner">
+      <div class="sb-label">칵테일 취향 결과 공유</div>
+      <div class="sb-name"><em>${nickname}</em>님의 취향 분석 결과</div>
+      <button class="btn-try" onclick="restartQuiz()">🍸 나도 해보기</button>
+    </div>` : ''}
+
     <div class="result-hero">
       <div class="result-badge">${profile.emoji}</div>
       <div class="result-type-label">나의 칵테일 취향 유형</div>
@@ -1057,9 +1164,9 @@ function showResult() {
     <div class="restart-wrap">
       <div class="action-row">
         <button class="btn-action btn-save" onclick="saveResult()">📥 이미지 저장</button>
-        <button class="btn-action btn-share" onclick="shareLink()">🔗 링크 공유</button>
+        ${!isShared ? `<button class="btn-action btn-share" onclick="shareLink()">🔗 링크 공유</button>` : ''}
       </div>
-      <button class="btn-restart" onclick="restartQuiz()">↩ 다시 하기</button>
+      ${!isShared ? `<button class="btn-restart" onclick="restartQuiz()">↩ 다시 하기</button>` : ''}
     </div>
 
     <div style="text-align:center; padding: 8px 0 4px; font-size:11px; color:#3a3050; letter-spacing:.12em;">
@@ -1107,11 +1214,37 @@ async function saveResult() {
   btn.disabled = false;
 }
 
+/* ── URL 인코딩 / 디코딩 ── */
+function encodeResult() {
+  // answers에서 skip 제외하고 압축
+  const data = { n: nickname, a: {} };
+  for (const [id, val] of Object.entries(answers)) {
+    if (val !== 'skip') data.a[id] = val[0]; // 'like'→'l', 'meh'→'m', 'no'→'n'
+  }
+  return btoa(encodeURIComponent(JSON.stringify(data)));
+}
+
+function decodeResult(encoded) {
+  try {
+    const data = JSON.parse(decodeURIComponent(atob(encoded)));
+    const decoded = { nickname: data.n, answers: {} };
+    for (const [id, v] of Object.entries(data.a)) {
+      decoded.answers[id] = v === 'l' ? 'like' : v === 'm' ? 'meh' : 'no';
+    }
+    return decoded;
+  } catch { return null; }
+}
+
 /* ── 링크 공유 ── */
 function shareLink() {
-  const url = 'https://hyexjun.github.io/cocktail-taste';
+  const encoded = encodeResult();
+  const url = `https://hyexjun.github.io/cocktail-taste?r=${encoded}`;
   if (navigator.share) {
-    navigator.share({ title: '나의 칵테일 취향 찾기', text: '42종 칵테일에 반응하면 취향 레이더 + 맞춤 추천까지!', url });
+    navigator.share({
+      title: `${nickname}의 칵테일 취향`,
+      text: '나의 칵테일 취향 결과 보러 오기 🍸',
+      url
+    });
   } else {
     navigator.clipboard.writeText(url).then(() => {
       const btn = document.querySelector('.btn-share');
@@ -1122,9 +1255,35 @@ function shareLink() {
   }
 }
 
-/* ════════════════════════════════════════
-   UTIL
-════════════════════════════════════════ */
+/* ── 공유 링크로 들어왔을 때 결과 뷰 ── */
+function showSharedResult(decoded) {
+  answers = decoded.answers;
+  nickname = decoded.nickname;
+  showResult(true); // isShared = true
+}
+
+function restartQuiz() {
+  // URL 파라미터 제거 후 인트로로
+  history.replaceState(null, '', location.pathname);
+  nickname = '';
+  document.getElementById('nickname-input').value = '';
+  document.getElementById('btn-start').disabled = true;
+  show('screen-intro');
+}
+
+/* ── 페이지 로드 시 URL 체크 ── */
+(function init() {
+  const params = new URLSearchParams(location.search);
+  const r = params.get('r');
+  if (r) {
+    const decoded = decodeResult(r);
+    if (decoded) {
+      showSharedResult(decoded);
+      return;
+    }
+  }
+  show('screen-intro');
+})();
 const DISPLAY = {
   'screen-intro':  'flex',
   'screen-quiz':   'flex',
