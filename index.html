@@ -1255,15 +1255,29 @@ function shareLink() {
   }
 }
 
+/* ════════════════════════════════════════
+   UTIL
+════════════════════════════════════════ */
+const DISPLAY = {
+  'screen-intro':  'flex',
+  'screen-quiz':   'flex',
+  'screen-result': 'block',
+};
+function show(id) {
+  ['screen-intro','screen-quiz','screen-result'].forEach(s => {
+    document.getElementById(s).style.display = (s === id) ? DISPLAY[s] : 'none';
+  });
+  window.scrollTo(0, 0);
+}
+
 /* ── 공유 링크로 들어왔을 때 결과 뷰 ── */
 function showSharedResult(decoded) {
   answers = decoded.answers;
   nickname = decoded.nickname;
-  showResult(true); // isShared = true
+  showResult(true);
 }
 
 function restartQuiz() {
-  // URL 파라미터 제거 후 인트로로
   history.replaceState(null, '', location.pathname);
   nickname = '';
   document.getElementById('nickname-input').value = '';
@@ -1284,17 +1298,6 @@ function restartQuiz() {
   }
   show('screen-intro');
 })();
-const DISPLAY = {
-  'screen-intro':  'flex',
-  'screen-quiz':   'flex',
-  'screen-result': 'block',
-};
-function show(id) {
-  ['screen-intro','screen-quiz','screen-result'].forEach(s => {
-    document.getElementById(s).style.display = (s === id) ? DISPLAY[s] : 'none';
-  });
-  window.scrollTo(0, 0);
-}
 
 /* ════════════════════════════════════════
    FIREBASE 연동 메모 (배포 시 참고)
