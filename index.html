@@ -182,7 +182,7 @@
         border: 1px solid var(--border);
         border-top: 3px solid var(--amber);
         border-radius: 12px;
-        padding: 18px 20px;
+        padding: 20px 20px;
         text-align: center;
         margin-bottom: 0;
       }
@@ -629,7 +629,7 @@
       /* 추천 카드 */
       .rec-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 12px;
       }
       .rec-card {
@@ -737,10 +737,9 @@
         gap: 10px;
       }
       .radar-block-title {
-        font-size: 11px;
+        font-size: 13px;
         font-weight: 700;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
+        letter-spacing: 0.1em;
         color: var(--muted);
         text-align: center;
       }
@@ -861,7 +860,7 @@
     <div id="screen-quiz" style="display: none">
       <div class="quiz-header">
         <div class="progress-wrap">
-          <div class="progress-label" id="progress-label">0 / 28</div>
+          <div class="progress-label" id="progress-label">0 / 42</div>
           <div class="progress-bar-bg">
             <div
               class="progress-bar-fill"
@@ -904,11 +903,6 @@
     </div>
 
     <script>
-      /* ════════════════════════════════════════
-   DATA: 칵테일 42종 (스피릿별 6종 × 7카테고리)
-   퀴즈 출제용. spirit:'리큐르' 카드는 화면에 "리큐르 (향·플레이버)"로 표시.
-   ※ Firebase 배포 시 Firestore에 저장
-════════════════════════════════════════ */
       const COCKTAILS = [
         // ── 위스키 (6) ──
         {
@@ -971,7 +965,6 @@
           tags: ['ctag-spice', 'ctag-sour', 'ctag-herb'],
           labels: ['향신료', '산미', '허브'],
         },
-
         // ── 진 (6) ──
         {
           id: 'gin-tonic',
@@ -1033,7 +1026,6 @@
           tags: ['ctag-herb', 'ctag-citrus', 'ctag-fruity'],
           labels: ['허브', '시트러스', '과일'],
         },
-
         // ── 보드카 (6) ──
         {
           id: 'moscow-mule',
@@ -1095,7 +1087,6 @@
           tags: ['ctag-sweet', 'ctag-bitter'],
           labels: ['단맛', '비터'],
         },
-
         // ── 럼 (6) ──
         {
           id: 'mojito',
@@ -1157,7 +1148,6 @@
           tags: ['ctag-spice', 'ctag-sweet', 'ctag-fizzy'],
           labels: ['향신료', '단맛', '탄산'],
         },
-
         // ── 데킬라 (6) ──
         {
           id: 'margarita',
@@ -1219,8 +1209,7 @@
           tags: ['ctag-bitter', 'ctag-herb', 'ctag-spice'],
           labels: ['비터', '허브', '향신료'],
         },
-
-        // ── 리큐르 (향·플레이버) (6) ──
+        // ── 리큐르 (6) ──
         {
           id: 'aperol-spritz',
           spirit: '리큐르',
@@ -1281,8 +1270,7 @@
           tags: ['ctag-fruity', 'ctag-sweet', 'ctag-sour'],
           labels: ['과일', '단맛', '산미'],
         },
-
-        // ── 기타 (복합 스피릿) (6) ──
+        // ── 기타 (6) ──
         {
           id: 'long-island',
           spirit: '기타',
@@ -1345,12 +1333,7 @@
         },
       ];
 
-      /* ════════════════════════════════════════
-   추천 전용 풀 (퀴즈 미출제, 결과 추천에만 활용)
-   태그 매칭으로 취향 분석 결과에서 추천 (상위 4개만 노출)
-════════════════════════════════════════ */
       const REC_POOL = [
-        // ── 위스키 ──
         {
           id: 'mint-julep',
           name: '민트 줄렙',
@@ -1407,8 +1390,6 @@
           labels: ['향신료', '드라이', '비터'],
           desc: '훈연 처리한 올드패션드. 위스키 본연의 나무·스모키 향이 극대화되는 개성파 변형.',
         },
-
-        // ── 진 ──
         {
           id: 'aviation',
           name: '에비에이션',
@@ -1465,8 +1446,6 @@
           labels: ['시트러스', '허브', '산미'],
           desc: '진 + 코앵트로 + 릴레 블랑 + 레몬 + 압생트. 복합적인 시트러스와 허브향의 해장 칵테일.',
         },
-
-        // ── 보드카 ──
         {
           id: 'vodka-tonic',
           name: '보드카 토닉',
@@ -1523,8 +1502,6 @@
           labels: ['과일', '시트러스', '탄산'],
           desc: '보드카 + 크랜베리주스 + 자몽주스. 달콤한 베리와 쌉쌀한 자몽의 조합.',
         },
-
-        // ── 럼 ──
         {
           id: 'rum-sour',
           name: '럼 사워',
@@ -1573,8 +1550,6 @@
           labels: ['시트러스', '드라이', '산미'],
           desc: '럼 + 자몽주스 + 마라스키노 + 라임. 헤밍웨이가 사랑한 드라이 다이키리. 쌉쌀한 자몽이 포인트.',
         },
-
-        // ── 데킬라 ──
         {
           id: 'tommy-margarita',
           name: '토미스 마가리타',
@@ -1631,8 +1606,6 @@
           labels: ['시트러스', '탄산', '과일'],
           desc: '데킬라 + 자몽·오렌지·라임주스 + 소금 + 소다. 멕시코 길거리 대표 시트러스 칵테일.',
         },
-
-        // ── 리큐르 ──
         {
           id: 'chartreuse-smash',
           name: '샤르트뢰즈 스매시',
@@ -1689,8 +1662,6 @@
           labels: ['과일', '단맛'],
           desc: '보드카 + 샹보르(라즈베리 리큐르) + 파인애플주스. 달콤한 베리향의 마티니 스타일.',
         },
-
-        // ── 기타 ──
         {
           id: 'kill-royal',
           name: '킬 로얄',
@@ -1727,14 +1698,14 @@
 
       /* ════════════════════════════════════════
    STATE
+   - navHistory: 뒤로가기 스택 (window.history와 충돌 방지)
 ════════════════════════════════════════ */
-      let queue = []; // 출제 순서
-      let current = 0; // 현재 인덱스
-      let answers = {}; // { cocktailId: 'like'|'meh'|'no'|'skip' }
-      let history = []; // 뒤로가기용 스택
-      let nickname = ''; // 사용자 닉네임
+      let queue = [];
+      let current = 0;
+      let answers = {};
+      let navHistory = []; // ✅ FIX: 'history' → 'navHistory' (window.history 충돌 방지)
+      let nickname = '';
 
-      /* 닉네임 입력 핸들러 */
       function onNicknameInput() {
         const val = document.getElementById('nickname-input').value.trim();
         document.getElementById('btn-start').disabled = val.length === 0;
@@ -1754,7 +1725,7 @@
         queue = [...COCKTAILS];
         current = 0;
         answers = {};
-        history = [];
+        navHistory = []; // ✅ FIX: history → navHistory
         show('screen-quiz');
         renderCard();
       }
@@ -1762,12 +1733,13 @@
       function renderCard() {
         const c = queue[current];
         const total = queue.length;
+        const displayIdx = Math.min(current + 1, total); // ✅ FIX: 마지막 카드 오표시 방지
 
         document.getElementById('progress-label').textContent =
-          `${current + 1} / ${total}`;
+          `${displayIdx} / ${total}`;
         document.getElementById('progress-bar').style.width =
-          `${((current + 1) / total) * 100}%`;
-        document.getElementById('btn-back').disabled = history.length === 0;
+          `${(displayIdx / total) * 100}%`;
+        document.getElementById('btn-back').disabled = navHistory.length === 0; // ✅ FIX: history → navHistory
 
         const tagsHtml = c.tags
           .map((cls, i) => `<span class="ctag ${cls}">${c.labels[i]}</span>`)
@@ -1781,21 +1753,18 @@
               : c.spirit;
 
         document.getElementById('cocktail-card').innerHTML = `
-    <div class="card-visual" style="background:${c.color};">
-      ${c.emoji}
-    </div>
-    <div class="card-body">
-      <div class="card-spirit">${spiritLabel}</div>
-      <div class="card-name">${c.name}</div>
-      <div class="card-desc">${c.desc}</div>
-      <div class="card-tags">${tagsHtml}</div>
-    </div>
-  `;
+          <div class="card-visual" style="background:${c.color};">${c.emoji}</div>
+          <div class="card-body">
+            <div class="card-spirit">${spiritLabel}</div>
+            <div class="card-name">${c.name}</div>
+            <div class="card-desc">${c.desc}</div>
+            <div class="card-tags">${tagsHtml}</div>
+          </div>
+        `;
 
-        // 애니메이션 재실행
         const card = document.getElementById('cocktail-card');
         card.style.animation = 'none';
-        card.offsetHeight; // reflow
+        card.offsetHeight;
         card.style.animation = '';
       }
 
@@ -1803,7 +1772,7 @@
         const c = queue[current];
         if (val !== 'skip') answers[c.id] = val;
 
-        history.push({ idx: current, answerId: c.id, val });
+        navHistory.push({ idx: current, answerId: c.id, val }); // ✅ FIX: history → navHistory
         current++;
 
         if (current >= queue.length) {
@@ -1814,8 +1783,8 @@
       }
 
       function goBack() {
-        if (history.length === 0) return;
-        const last = history.pop();
+        if (navHistory.length === 0) return; // ✅ FIX: history → navHistory
+        const last = navHistory.pop(); // ✅ FIX: history → navHistory
         delete answers[last.answerId];
         current = last.idx;
         renderCard();
@@ -1824,21 +1793,19 @@
       /* ════════════════════════════════════════
    RESULT LOGIC
 ════════════════════════════════════════ */
-
-      /* 취향 키워드별 점수 계산 */
       const KEYWORD_COLORS = {
-        허브: { bar: '#7aaa8a', label: 'var(--sage)' },
-        향신료: { bar: '#e8b84b', label: 'var(--amber-lt)' },
-        시트러스: { bar: '#d4b86a', label: '#d4b86a' },
-        산미: { bar: '#b0c870', label: '#b0c870' },
-        견과류: { bar: '#c0946a', label: '#c0946a' },
-        드라이: { bar: '#8b90a8', label: 'var(--slate)' },
-        비터: { bar: '#9090c0', label: '#9090c0' },
-        단맛: { bar: '#c45c72', label: 'var(--rose)' },
-        과일: { bar: '#c0a0e0', label: '#c0a0e0' },
-        트로피컬: { bar: '#d4b050', label: '#d4b050' },
-        세이보리: { bar: '#80c090', label: '#80c090' },
-        탄산: { bar: '#90b8d8', label: '#90b8d8' },
+        허브: { bar: '#7aaa8a' },
+        향신료: { bar: '#e8b84b' },
+        시트러스: { bar: '#d4b86a' },
+        산미: { bar: '#b0c870' },
+        견과류: { bar: '#c0946a' },
+        드라이: { bar: '#8b90a8' },
+        비터: { bar: '#9090c0' },
+        단맛: { bar: '#c45c72' },
+        과일: { bar: '#c0a0e0' },
+        트로피컬: { bar: '#d4b050' },
+        세이보리: { bar: '#80c090' },
+        탄산: { bar: '#90b8d8' },
       };
 
       function calcKeywordScores() {
@@ -1854,13 +1821,11 @@
         return scores;
       }
 
-      /* 취향 유형 판정 */
       function getProfile(scores) {
         const top = Object.entries(scores)
           .sort((a, b) => b[1] - a[1])
           .slice(0, 3)
           .map((x) => x[0]);
-        const liked = COCKTAILS.filter((c) => answers[c.id] === 'like');
 
         if (top.includes('허브') && top.includes('향신료'))
           return {
@@ -1911,7 +1876,6 @@
         };
       }
 
-      /* 추천 칵테일 (응답한 것 제외 + REC_POOL 포함, 상위 키워드 기반) */
       function getRecommendations(scores) {
         const answeredIds = new Set(Object.keys(answers));
         const topKws = Object.entries(scores)
@@ -1919,10 +1883,8 @@
           .slice(0, 4)
           .map((x) => x[0]);
 
-        // 퀴즈 미출제 칵테일(skip 포함) + REC_POOL 전체 후보
-        const quizCandidates = COCKTAILS.filter(
-          (c) => !answeredIds.has(c.id) || answers[c.id] === 'skip',
-        );
+        // ✅ FIX: skip은 answers에 저장되지 않으므로 !answeredIds.has(c.id) 만으로 충분
+        const quizCandidates = COCKTAILS.filter((c) => !answeredIds.has(c.id));
         const poolCandidates = REC_POOL.map((c) => ({
           ...c,
           tags: [],
@@ -1939,15 +1901,12 @@
             return { c, s };
           })
           .sort((a, b) => b.s - a.s)
-          .slice(0, 4);
+          .slice(0, 6);
 
         if (scored.length === 0) {
           return COCKTAILS.filter((c) => answers[c.id] === 'like')
-            .slice(0, 4)
-            .map((c) => ({
-              c,
-              reason: '이미 좋아하는 칵테일과 비슷한 구조',
-            }));
+            .slice(0, 6)
+            .map((c) => ({ c, reason: '이미 좋아하는 칵테일과 비슷한 구조' }));
         }
 
         return scored.map(({ c }) => {
@@ -1963,10 +1922,8 @@
       }
 
       /* ════════════════════════════════════════
-   RADAR CHART HELPERS
+   RADAR CHART
 ════════════════════════════════════════ */
-
-      /* SVG 정육각형 좌표 계산 */
       function hexPoint(cx, cy, r, i, n) {
         const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
         return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
@@ -1976,43 +1933,33 @@
         const n = labels.length;
         const levels = 4;
 
-        // 격자선
         let gridLines = '';
         for (let l = 1; l <= levels; l++) {
           const pts = Array.from({ length: n }, (_, i) =>
             hexPoint(cx, cy, (r * l) / levels, i, n),
           );
-          gridLines += `<polygon points="${pts.map((p) => p.join(',')).join(' ')}"
-      fill="none" stroke="#2e2438" stroke-width="1"/>`;
+          gridLines += `<polygon points="${pts.map((p) => p.join(',')).join(' ')}" fill="none" stroke="#2e2438" stroke-width="1"/>`;
         }
 
-        // 축선
         let axes = '';
         for (let i = 0; i < n; i++) {
           const [x, y] = hexPoint(cx, cy, r, i, n);
-          axes += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}"
-      stroke="#2e2438" stroke-width="1"/>`;
+          axes += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#2e2438" stroke-width="1"/>`;
         }
 
-        // 데이터 폴리곤
         const pts = values.map((v, i) =>
           hexPoint(cx, cy, r * Math.max(0, Math.min(1, v)), i, n),
         );
         const polyPts = pts.map((p) => p.join(',')).join(' ');
 
-        // 라벨
         let labelsSvg = '';
         for (let i = 0; i < n; i++) {
           const pad = 22;
           const [lx, ly] = hexPoint(cx, cy, r + pad, i, n);
           const anchor = lx < cx - 4 ? 'end' : lx > cx + 4 ? 'start' : 'middle';
-          labelsSvg += `<text x="${lx}" y="${ly}" text-anchor="${anchor}"
-      dominant-baseline="middle"
-      font-size="10" fill="${labelColor || '#7b7485'}"
-      font-family="Noto Sans KR, sans-serif">${labels[i]}</text>`;
+          labelsSvg += `<text x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="middle" font-size="10" fill="${labelColor || '#7b7485'}" font-family="Noto Sans KR, sans-serif">${labels[i]}</text>`;
         }
 
-        // 꼭짓점 점
         const dots = pts
           .map(
             ([x, y]) =>
@@ -2020,37 +1967,27 @@
           )
           .join('');
 
-        return `
-    ${gridLines}
-    ${axes}
-    <polygon points="${polyPts}"
-      fill="${color}" fill-opacity=".18"
-      stroke="${color}" stroke-width="1.5"
-      class="radar-fill"/>
-    ${dots}
-    ${labelsSvg}
-  `;
+        return `${gridLines}${axes}
+          <polygon points="${polyPts}" fill="${color}" fill-opacity=".18" stroke="${color}" stroke-width="1.5" class="radar-fill"/>
+          ${dots}${labelsSvg}`;
       }
 
-      /* 취향 6각형: 6축으로 키워드 점수 매핑 */
       function calcTasteRadar(scores) {
         const norm = (keys) => {
           const vals = keys.map((k) => Math.max(0, scores[k] || 0));
           const sum = vals.reduce((a, b) => a + b, 0);
-          const maxPossible = keys.length * 4;
-          return Math.min(1, sum / maxPossible);
+          return Math.min(1, sum / (keys.length * 4));
         };
         return [
-          norm(['허브', '향신료', '세이보리']), // 향·복합
-          norm(['단맛', '트로피컬', '과일']), // 단맛·과일
-          norm(['산미', '시트러스']), // 산미
-          norm(['비터', '드라이']), // 쓴맛·드라이
-          norm(['견과류']), // 바디·무게감
-          norm(['탄산', '시트러스']), // 청량감
+          norm(['허브', '향신료', '세이보리']),
+          norm(['단맛', '트로피컬', '과일']),
+          norm(['산미', '시트러스']),
+          norm(['비터', '드라이']),
+          norm(['견과류']),
+          norm(['탄산', '시트러스']),
         ];
       }
 
-      /* 스피릿 6각형: 각 스피릿 칵테일들의 가중 평균 */
       function calcSpiritRadar() {
         const spirits = ['위스키', '진', '보드카', '럼', '데킬라', '리큐르'];
         return spirits.map((sp) => {
@@ -2073,10 +2010,11 @@
           return count === 0 ? 0 : total / count;
         });
       }
+
       function buildRadarSVG(labels, values, color, size) {
         const cx = size / 2,
-          cy = size / 2;
-        const r = size * 0.33;
+          cy = size / 2,
+          r = size * 0.33;
         const inner = makeRadar({
           cx,
           cy,
@@ -2094,7 +2032,6 @@
         const profile = getProfile(scores);
         const recs = getRecommendations(scores);
 
-        // 키워드 정규화 (0~100)
         const vals = Object.values(scores);
         const maxVal = Math.max(...vals, 1);
         const minVal = Math.min(...vals, 0);
@@ -2105,7 +2042,6 @@
           );
         };
 
-        // 리뷰 테이블
         const liked = COCKTAILS.filter((c) => answers[c.id] === 'like');
         const mehs = COCKTAILS.filter((c) => answers[c.id] === 'meh');
         const nos = COCKTAILS.filter((c) => answers[c.id] === 'no');
@@ -2125,7 +2061,6 @@
           ),
         ].join('');
 
-        // 키워드 바
         const topKeywords = Object.entries(scores)
           .sort((a, b) => b[1] - a[1])
           .filter(([, v]) => v > 0)
@@ -2135,32 +2070,17 @@
           .map(([key]) => {
             const pct = normPct(key);
             const col = KEYWORD_COLORS[key]?.bar || '#a89a7a';
-            return `
-      <div class="ks-row">
-        <span class="ks-label">${key}</span>
-        <div class="ks-bar-bg">
-          <div class="ks-bar-fill" style="width:${pct}%; background:${col};"></div>
-        </div>
-        <span class="ks-score">${pct}</span>
-      </div>`;
+            return `<div class="ks-row"><span class="ks-label">${key}</span><div class="ks-bar-bg"><div class="ks-bar-fill" style="width:${pct}%; background:${col};"></div></div><span class="ks-score">${pct}</span></div>`;
           })
           .join('');
 
-        // 추천 카드
         const recHtml = recs
           .map(
-            ({ c, reason }) => `
-    <div class="rec-card">
-      <div class="rec-emoji">${c.emoji}</div>
-      <div class="rec-name">${c.name}</div>
-      <div class="rec-reason">${reason}</div>
-    </div>
-  `,
+            ({ c, reason }) =>
+              `<div class="rec-card"><div class="rec-emoji">${c.emoji}</div><div class="rec-name">${c.name}</div><div class="rec-reason">${reason}</div></div>`,
           )
           .join('');
 
-        // ── 레이더 차트 ──
-        const tasteVals = calcTasteRadar(scores);
         const tasteLabels = [
           '향·복합',
           '단맛·과일',
@@ -2169,9 +2089,6 @@
           '바디감',
           '청량감',
         ];
-        const tasteSVG = buildRadarSVG(tasteLabels, tasteVals, '#c9942a', 220);
-
-        const spiritVals = calcSpiritRadar();
         const spiritLabels = [
           '위스키',
           '진',
@@ -2180,111 +2097,96 @@
           '데킬라',
           '리큐르',
         ];
+        const tasteSVG = buildRadarSVG(
+          tasteLabels,
+          calcTasteRadar(scores),
+          '#c9942a',
+          220,
+        );
         const spiritSVG = buildRadarSVG(
           spiritLabels,
-          spiritVals,
+          calcSpiritRadar(),
           '#7aaa8a',
           220,
         );
 
         document.getElementById('screen-result').innerHTML = `
-    ${
-      isShared
-        ? `
-    <div class="shared-banner">
-      <div class="sb-label">칵테일 취향 결과 공유</div>
-      <div class="sb-name"><em>${nickname}</em>님의 취향 분석 결과</div>
-      <button class="btn-try" onclick="restartQuiz()">🍸 나도 해보기</button>
-    </div>`
-        : ''
-    }
+          ${
+            isShared
+              ? `
+            <div class="shared-banner">
+              <div class="sb-label">칵테일 취향 결과 공유</div>
+              <div class="sb-name"><em>${nickname}</em>님의 취향 분석 결과</div>
+            </div>`
+              : ''
+          }
 
-    <div class="result-hero">
-      <div class="result-badge">${profile.emoji}</div>
-      <div class="result-type-label">나의 칵테일 취향 유형</div>
-      <div class="result-type-name">${profile.name}</div>
-      <div class="result-type-desc">${profile.desc}</div>
-    </div>
+          <div class="result-hero">
+            <div class="result-badge">${profile.emoji}</div>
+            <div class="result-type-label">나의 칵테일 취향 유형</div>
+            <div class="result-type-name">${profile.name}</div>
+            <div class="result-type-desc">${profile.desc}</div>
+          </div>
 
-    <section>
-      <div class="sec-title">
-        <span class="sec-icon">🕸️</span>
-        <h2>취향 레이더</h2>
-        <div class="rule"></div>
-      </div>
-      <div class="radar-row">
-        <div class="radar-block">
-          <div class="radar-block-title">🍋 맛·향 프로필</div>
-          ${tasteSVG}
-        </div>
-        <div class="radar-block">
-          <div class="radar-block-title">🥃 베이스 스피릿 선호도</div>
-          ${spiritSVG}
-        </div>
-      </div>
-    </section>
+          <section>
+            <div class="sec-title"><span class="sec-icon">🕸️</span><h2>취향 레이더</h2><div class="rule"></div></div>
+            <div class="radar-row">
+              <div class="radar-block"><div class="radar-block-title">🍋 맛·향 프로필</div>${tasteSVG}</div>
+              <div class="radar-block"><div class="radar-block-title">🥃 베이스 스피릿 선호도</div>${spiritSVG}</div>
+            </div>
+          </section>
 
-    <section>
-      <div class="sec-title">
-        <span class="sec-icon">📊</span>
-        <h2>취향 키워드 분석</h2>
-        <div class="rule"></div>
-      </div>
-      <div class="keyword-scores">${kwBarsHtml || '<p style="color:var(--muted);font-size:13px;">응답 데이터가 부족합니다.</p>'}</div>
-    </section>
+          <section>
+            <div class="sec-title"><span class="sec-icon">📊</span><h2>취향 키워드 분석</h2><div class="rule"></div></div>
+            <div class="keyword-scores">${kwBarsHtml || '<p style="color:var(--muted);font-size:13px;">응답 데이터가 부족합니다.</p>'}</div>
+          </section>
 
-    ${
-      recHtml
-        ? `
-    <section>
-      <div class="sec-title">
-        <span class="sec-icon">🍹</span>
-        <h2>다음에 마셔볼 칵테일 추천</h2>
-        <div class="rule"></div>
-      </div>
-      <div class="rec-grid">${recHtml}</div>
-    </section>`
-        : ''
-    }
+          ${
+            recHtml
+              ? `
+          <section>
+            <div class="sec-title"><span class="sec-icon">🍹</span><h2>다음에 마셔볼 칵테일 추천</h2><div class="rule"></div></div>
+            <div class="rec-grid">${recHtml}</div>
+          </section>`
+              : ''
+          }
 
-    ${
-      reviewHtml
-        ? `
-    <section>
-      <div class="sec-title">
-        <span class="sec-icon">📝</span>
-        <h2>내 응답 모아보기</h2>
-        <div class="rule"></div>
-      </div>
-      <div class="review-table">${reviewHtml}</div>
-    </section>`
-        : ''
-    }
+          ${
+            reviewHtml
+              ? `
+          <section>
+            <div class="sec-title"><span class="sec-icon">📝</span><h2>내 응답 모아보기</h2><div class="rule"></div></div>
+            <div class="review-table">${reviewHtml}</div>
+          </section>`
+              : ''
+          }
 
-    <div class="restart-wrap">
-      <div class="action-row">
-        <button class="btn-action btn-save" onclick="saveResult()">📥 이미지 저장</button>
-        ${!isShared ? `<button class="btn-action btn-share" onclick="shareLink()">🔗 결과 공유</button>` : ''}
-        ${!isShared ? `<button class="btn-action btn-restart-sm" onclick="restartQuiz()">↩ 다시하기</button>` : ''}
-      </div>
-    </div>
+          <div class="restart-wrap">
+            <div class="action-row">
+              ${
+                isShared
+                  ? `<button class="btn-action btn-try" onclick="restartQuiz()">🍸 나도 해보기</button>`
+                  : `<button class="btn-action btn-save" onclick="saveResult()">📥 이미지 저장</button>
+                   <button class="btn-action btn-share" onclick="shareLink()">🔗 결과 공유</button>
+                   <button class="btn-action btn-restart-sm" onclick="restartQuiz()">↩ 다시하기</button>`
+              }
+            </div>
+          </div>
 
-    <div style="text-align:center; padding: 8px 0 4px; font-size:11px; color:#3a3050; letter-spacing:.12em;">
-      made by hyexjun
-    </div>
-  `;
+          <div style="text-align:center; padding: 8px 0 4px; font-size:11px; color:#3a3050; letter-spacing:.12em;">
+            made by hyexjun
+          </div>
+        `;
 
         show('screen-result');
       }
 
-      function restartQuiz() {
-        show('screen-intro');
-      }
-
-      /* ── 이미지 저장 ── */
+      /* ════════════════════════════════════════
+   이미지 저장
+   ✅ FIX: document.fonts.ready await → 폰트 렌더링 보장
+════════════════════════════════════════ */
       async function saveResult() {
         const el = document.getElementById('screen-result');
-        // html2canvas 동적 로드
         if (!window.html2canvas) {
           await new Promise((res, rej) => {
             const s = document.createElement('script');
@@ -2299,6 +2201,7 @@
         btn.textContent = '⏳ 저장 중...';
         btn.disabled = true;
         try {
+          await document.fonts.ready; // ✅ FIX: 폰트 로드 완료 후 캡처
           const canvas = await html2canvas(el, {
             backgroundColor: '#0f0c10',
             scale: 2,
@@ -2316,19 +2219,25 @@
         btn.disabled = false;
       }
 
-      /* ── URL 인코딩 / 디코딩 ── */
+      /* ════════════════════════════════════════
+   URL 인코딩 / 디코딩
+   ✅ FIX: URL-safe Base64 적용 (= 패딩 제거, +→-, /→_)
+════════════════════════════════════════ */
       function encodeResult() {
-        // answers에서 skip 제외하고 압축
         const data = { n: nickname, a: {} };
         for (const [id, val] of Object.entries(answers)) {
-          if (val !== 'skip') data.a[id] = val[0]; // 'like'→'l', 'meh'→'m', 'no'→'n'
+          if (val !== 'skip') data.a[id] = val[0];
         }
-        return btoa(encodeURIComponent(JSON.stringify(data)));
+        return btoa(encodeURIComponent(JSON.stringify(data)))
+          .replace(/=/g, '')
+          .replace(/\+/g, '-')
+          .replace(/\//g, '_'); // ✅ FIX: URL-safe Base64
       }
 
       function decodeResult(encoded) {
         try {
-          const data = JSON.parse(decodeURIComponent(atob(encoded)));
+          const padded = encoded.replace(/-/g, '+').replace(/_/g, '/'); // ✅ FIX: URL-safe Base64 복원
+          const data = JSON.parse(decodeURIComponent(atob(padded)));
           const decoded = { nickname: data.n, answers: {} };
           for (const [id, v] of Object.entries(data.a)) {
             decoded.answers[id] = v === 'l' ? 'like' : v === 'm' ? 'meh' : 'no';
@@ -2339,7 +2248,6 @@
         }
       }
 
-      /* ── 링크 공유 ── */
       function shareLink() {
         const encoded = encodeResult();
         const url = `https://hyexjun.github.io/cocktail-taste?r=${encoded}`;
@@ -2361,13 +2269,14 @@
 
       /* ════════════════════════════════════════
    UTIL
+   ✅ FIX: position:fixed 대신 overflow:hidden으로 iOS 스크롤 점프 방지
 ════════════════════════════════════════ */
       const DISPLAY = {
         'screen-intro': 'flex',
         'screen-quiz': 'flex',
         'screen-result': 'block',
       };
-      /* ── 터치 스크롤 차단 ── */
+
       function preventTouch(e) {
         e.preventDefault();
       }
@@ -2378,9 +2287,8 @@
             s === id ? DISPLAY[s] : 'none';
         });
         const lockScroll = id === 'screen-quiz' || id === 'screen-intro';
+        // ✅ FIX: position:fixed 제거 → iOS Safari 스크롤 점프 방지
         document.body.style.overflow = lockScroll ? 'hidden' : '';
-        document.body.style.position = lockScroll ? 'fixed' : '';
-        document.body.style.width = lockScroll ? '100%' : '';
         document.documentElement.style.overflow = lockScroll ? 'hidden' : '';
         if (lockScroll) {
           document.addEventListener('touchmove', preventTouch, {
@@ -2392,22 +2300,21 @@
         window.scrollTo(0, 0);
       }
 
-      /* ── 공유 링크로 들어왔을 때 결과 뷰 ── */
       function showSharedResult(decoded) {
         answers = decoded.answers;
         nickname = decoded.nickname;
         showResult(true);
       }
 
+      /* ✅ FIX: restartQuiz 중복 선언 제거 → 단일 함수로 통합 */
       function restartQuiz() {
-        history.replaceState(null, '', location.pathname);
+        window.history.replaceState(null, '', location.pathname); // window.history 명시
         nickname = '';
         document.getElementById('nickname-input').value = '';
         document.getElementById('btn-start').disabled = true;
         show('screen-intro');
       }
 
-      /* ── 페이지 로드 시 URL 체크 ── */
       (function init() {
         const params = new URLSearchParams(location.search);
         const r = params.get('r');
@@ -2420,23 +2327,6 @@
         }
         show('screen-intro');
       })();
-
-      /* ════════════════════════════════════════
-   FIREBASE 연동 메모 (배포 시 참고)
-   ────────────────────────────────────────
-   1. firebase init → hosting + firestore
-   2. 결과 저장:
-      import { getFirestore, collection, addDoc } from 'firebase/firestore';
-      const db = getFirestore(app);
-      await addDoc(collection(db, 'results'), {
-        answers,        // { cocktailId: 'like'|'meh'|'no' }
-        scores,         // 키워드 점수
-        profileType,    // 취향 유형 이름
-        timestamp: serverTimestamp(),
-        userId: sessionId // 익명 식별자 (optional)
-      });
-   3. 집계 대시보드: 칵테일별 like/meh/no 비율 실시간 집계
-════════════════════════════════════════ */
     </script>
   </body>
 </html>
