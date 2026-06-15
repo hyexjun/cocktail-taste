@@ -330,15 +330,15 @@ body {
   max-width: 680px;
   margin: 0 auto;
   width: 100%;
-  padding: 40px 20px 80px;
+  padding: 32px 28px 80px;
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: 0;
 }
 
 .result-hero {
   text-align: center;
-  padding: 32px 0 0;
+  padding: 24px 0 36px;
 }
 .result-badge {
   display: inline-flex;
@@ -357,7 +357,7 @@ body {
 .result-type-name {
   font-family: 'Playfair Display', serif;
   font-size: clamp(22px, 4vw, 30px);
-  font-weight: 600; margin-bottom: 12px;
+  font-weight: 600; margin-bottom: 14px;
   line-height: 1.4;
 }
 .result-type-name em { font-style: italic; color: var(--amber-lt); }
@@ -378,6 +378,18 @@ body {
   white-space: nowrap;
 }
 .sec-title .rule { flex: 1; height: 1px; background: var(--border); }
+
+#screen-result section {
+  padding: 36px 0 36px;
+  border-top: 1px solid var(--border);
+}
+
+/* 레이더 세로 쌓기 */
+.radar-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
 
 /* 키워드 스코어 */
 .keyword-scores {
@@ -446,7 +458,11 @@ body {
 .rtag-no   { color: var(--rose);     font-size: 11px; white-space: nowrap; }
 
 /* 다시하기 */
-.restart-wrap { text-align: center; }
+.restart-wrap {
+  text-align: center;
+  padding: 36px 0 0;
+  border-top: 1px solid var(--border);
+}
 .btn-restart {
   padding: 12px 32px;
   background: var(--surface);
@@ -461,12 +477,6 @@ body {
 .btn-restart:hover { border-color: var(--amber); color: var(--amber-lt); }
 
 /* ── 레이더 차트 ── */
-.radar-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 0;
-}
 .radar-block {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -497,12 +507,13 @@ body {
 /* ── 저장·공유 버튼 ── */
 .action-row {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   justify-content: center;
   margin-bottom: 10px;
+  flex-wrap: nowrap;
 }
 .btn-action {
-  padding: 10px 20px;
+  padding: 10px 16px;
   border-radius: 100px;
   border: 1px solid var(--border);
   background: var(--surface);
@@ -513,9 +524,24 @@ body {
   cursor: pointer;
   transition: all .2s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 .btn-save:hover  { border-color: var(--amber); color: var(--amber-lt); }
 .btn-share:hover { border-color: var(--sage);  color: var(--sage); }
+.btn-restart-sm {
+  padding: 10px 16px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 13px; font-weight: 500;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all .2s;
+}
+.btn-restart-sm:hover { border-color: var(--amber); color: var(--amber-lt); }
 
 /* ── 반응형 ── */
 @media (max-width: 480px) {
@@ -523,7 +549,6 @@ body {
   .act-btn { padding: 10px 4px; font-size: 10px; }
   .act-btn .act-icon { font-size: 18px; }
   .rec-grid { grid-template-columns: 1fr 1fr; }
-  .radar-row { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -1156,14 +1181,15 @@ function showResult(isShared = false) {
       <div class="keyword-scores">${kwBarsHtml || '<p style="color:var(--muted);font-size:13px;">응답 데이터가 부족합니다.</p>'}</div>
     </section>
 
+    ${recHtml ? `
     <section>
       <div class="sec-title">
         <span class="sec-icon">🍹</span>
         <h2>다음에 마셔볼 칵테일 추천</h2>
         <div class="rule"></div>
       </div>
-      <div class="rec-grid">${recHtml || '<p style="color:var(--muted);font-size:13px;">추천할 칵테일을 찾지 못했습니다.</p>'}</div>
-    </section>
+      <div class="rec-grid">${recHtml}</div>
+    </section>` : ''}
 
     ${reviewHtml ? `
     <section>
@@ -1177,10 +1203,10 @@ function showResult(isShared = false) {
 
     <div class="restart-wrap">
       <div class="action-row">
-        <button class="btn-action btn-save" onclick="saveResult()">📥 이미지 저장</button>
-        ${!isShared ? `<button class="btn-action btn-share" onclick="shareLink()">🔗 링크 공유</button>` : ''}
+        <button class="btn-action btn-save" onclick="saveResult()">📥 저장</button>
+        ${!isShared ? `<button class="btn-action btn-share" onclick="shareLink()">🔗 공유</button>` : ''}
+        ${!isShared ? `<button class="btn-action btn-restart-sm" onclick="restartQuiz()">↩ 다시하기</button>` : ''}
       </div>
-      ${!isShared ? `<button class="btn-restart" onclick="restartQuiz()">↩ 다시 하기</button>` : ''}
     </div>
 
     <div style="text-align:center; padding: 8px 0 4px; font-size:11px; color:#3a3050; letter-spacing:.12em;">
