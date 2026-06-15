@@ -167,9 +167,10 @@ body {
   max-width: 540px;
   margin: 0 auto;
   width: 100%;
-  padding: 0 16px 0;
+  padding: 0 20px 0;
   height: 100vh;
   height: 100dvh;
+  overflow: hidden;
 }
 
 /* 상단 바 */
@@ -213,8 +214,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 0 12px;
   overflow: hidden;
+}
+.card-btn-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 .cocktail-card {
   width: 100%;
@@ -281,7 +287,7 @@ body {
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
   flex-shrink: 0;
-  padding: 0 0 20px;
+  padding-bottom: 20px;
 }
 .act-btn {
   display: flex;
@@ -549,24 +555,25 @@ body {
   </div>
 
   <div class="card-area">
-    <div class="cocktail-card" id="cocktail-card">
-      <!-- JS로 렌더링 -->
+    <div class="card-btn-wrap">
+      <div class="cocktail-card" id="cocktail-card">
+        <!-- JS로 렌더링 -->
+      </div>
+      <div class="action-buttons">
+        <button class="act-btn no"   onclick="answer('no')">
+          <span class="act-icon">👎</span>별로
+        </button>
+        <button class="act-btn meh"  onclick="answer('meh')">
+          <span class="act-icon">😐</span>무난
+        </button>
+        <button class="act-btn like" onclick="answer('like')">
+          <span class="act-icon">👍</span>좋아
+        </button>
+        <button class="act-btn skip" onclick="answer('skip')">
+          <span class="act-icon">⏭</span>모름
+        </button>
+      </div>
     </div>
-  </div>
-
-  <div class="action-buttons">
-    <button class="act-btn no"   onclick="answer('no')">
-      <span class="act-icon">👎</span>별로
-    </button>
-    <button class="act-btn meh"  onclick="answer('meh')">
-      <span class="act-icon">😐</span>무난
-    </button>
-    <button class="act-btn like" onclick="answer('like')">
-      <span class="act-icon">👍</span>좋아
-    </button>
-    <button class="act-btn skip" onclick="answer('skip')">
-      <span class="act-icon">⏭</span>모름
-    </button>
   </div>
 </div>
 
@@ -1267,6 +1274,7 @@ function show(id) {
   ['screen-intro','screen-quiz','screen-result'].forEach(s => {
     document.getElementById(s).style.display = (s === id) ? DISPLAY[s] : 'none';
   });
+  document.body.style.overflow = id === 'screen-quiz' ? 'hidden' : '';
   window.scrollTo(0, 0);
 }
 
