@@ -55,17 +55,12 @@
         margin: 0;
         padding: 0;
       }
-      html,
-      body {
-        height: 100%;
-      }
-
       body {
         background: var(--bg);
         color: var(--txt);
         font-family: 'Noto Sans KR', sans-serif;
         font-weight: 300;
-        min-height: 100vh;
+        min-height: 100dvh;
         display: flex;
         flex-direction: column;
       }
@@ -246,7 +241,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 0 12px;
+        padding: 16px 0 12px;
         gap: 12px;
         flex-shrink: 0;
       }
@@ -737,7 +732,7 @@
         gap: 10px;
       }
       .radar-block-title {
-        font-size: 11px;
+        font-size: 13px;
         font-weight: 700;
         letter-spacing: 0.15em;
         text-transform: uppercase;
@@ -761,6 +756,8 @@
       }
       .radar-fill {
         animation: radarIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+        transform-box: fill-box;
+        transform-origin: center;
       }
 
       /* ── 저장·공유 버튼 ── */
@@ -859,23 +856,24 @@
 
     <!-- ══ SCREEN 2: QUIZ ══ -->
     <div id="screen-quiz" style="display: none">
+      <div class="quiz-header">
+        <div class="progress-wrap">
+          <div class="progress-label" id="progress-label">0 / 28</div>
+          <div class="progress-bar-bg">
+            <div
+              class="progress-bar-fill"
+              id="progress-bar"
+              style="width: 0%"
+            ></div>
+          </div>
+        </div>
+        <button class="btn-back" id="btn-back" onclick="goBack()" disabled>
+          ← 뒤로
+        </button>
+      </div>
+
       <div class="card-area">
         <div class="card-btn-wrap">
-          <div class="quiz-header">
-            <div class="progress-wrap">
-              <div class="progress-label" id="progress-label">0 / 28</div>
-              <div class="progress-bar-bg">
-                <div
-                  class="progress-bar-fill"
-                  id="progress-bar"
-                  style="width: 0%"
-                ></div>
-              </div>
-            </div>
-            <button class="btn-back" id="btn-back" onclick="goBack()" disabled>
-              ← 뒤로
-            </button>
-          </div>
           <div class="cocktail-card" id="cocktail-card">
             <!-- JS로 렌더링 -->
           </div>
@@ -1938,11 +1936,11 @@
             return { c, s };
           })
           .sort((a, b) => b.s - a.s)
-          .slice(0, 4);
+          .slice(0, 6);
 
         if (scored.length === 0) {
           return COCKTAILS.filter((c) => answers[c.id] === 'like')
-            .slice(0, 4)
+            .slice(0, 6)
             .map((c) => ({
               c,
               reason: '이미 좋아하는 칵테일과 비슷한 구조',
@@ -2277,10 +2275,12 @@
       }
 
       function restartQuiz() {
+        window.history.replaceState(null, '', location.pathname);
+        nickname = '';
+        document.getElementById('nickname-input').value = '';
+        document.getElementById('btn-start').disabled = true;
         show('screen-intro');
       }
-
-      /* ── 이미지 저장 ── */
       async function saveResult() {
         const el = document.getElementById('screen-result');
         // html2canvas 동적 로드
@@ -2378,6 +2378,8 @@
         });
         const lockScroll = id === 'screen-quiz' || id === 'screen-intro';
         document.body.style.overflow = lockScroll ? 'hidden' : '';
+        document.body.style.position = lockScroll ? 'fixed' : '';
+        document.body.style.width = lockScroll ? '100%' : '';
         document.documentElement.style.overflow = lockScroll ? 'hidden' : '';
         if (lockScroll) {
           document.addEventListener('touchmove', preventTouch, {
@@ -2394,14 +2396,6 @@
         answers = decoded.answers;
         nickname = decoded.nickname;
         showResult(true);
-      }
-
-      function restartQuiz() {
-        history.replaceState(null, '', location.pathname);
-        nickname = '';
-        document.getElementById('nickname-input').value = '';
-        document.getElementById('btn-start').disabled = true;
-        show('screen-intro');
       }
 
       /* ── 페이지 로드 시 URL 체크 ── */
