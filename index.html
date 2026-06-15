@@ -241,7 +241,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 16px 0 12px;
+        padding: 0 0 12px;
         gap: 12px;
         flex-shrink: 0;
       }
@@ -428,6 +428,11 @@
         background: rgba(140, 180, 220, 0.12);
         color: #90b8d8;
         border-color: rgba(140, 180, 220, 0.25);
+      }
+      .ctag-creamy {
+        background: rgba(220, 200, 180, 0.12);
+        color: #d4b898;
+        border-color: rgba(220, 200, 180, 0.25);
       }
 
       /* 버튼 그룹 */
@@ -954,8 +959,8 @@
           emoji: '🥃',
           color: '#140e06',
           desc: '아이리시 위스키 + 커피 + 설탕 + 생크림. 따뜻한 커피 위에 차가운 크림이 떠 있는 핫 칵테일의 대명사.',
-          tags: ['ctag-bitter', 'ctag-sweet'],
-          labels: ['비터', '단맛'],
+          tags: ['ctag-bitter', 'ctag-sweet', 'ctag-creamy'],
+          labels: ['비터', '단맛', '크리미'],
         },
         {
           id: 'penicillin',
@@ -1088,8 +1093,8 @@
           emoji: '🍸',
           color: '#120e08',
           desc: '보드카 + 칼루아 + 우유(또는 크림). 커피 리큐르의 달콤한 쓴맛과 크림의 부드러움. 영화 빅 레보스키의 그 칵테일.',
-          tags: ['ctag-sweet', 'ctag-bitter'],
-          labels: ['단맛', '비터'],
+          tags: ['ctag-sweet', 'ctag-bitter', 'ctag-creamy'],
+          labels: ['단맛', '비터', '크리미'],
         },
 
         // ── 럼 (6) ──
@@ -1244,8 +1249,8 @@
           emoji: '🍊',
           color: '#120c08',
           desc: '베일리스 아이리시 크림 + 커피. 크리미하고 달콤한 아이리시 크림이 커피와 어우러지는 디저트 드링크.',
-          tags: ['ctag-sweet', 'ctag-bitter'],
-          labels: ['단맛', '비터'],
+          tags: ['ctag-sweet', 'ctag-bitter', 'ctag-creamy'],
+          labels: ['단맛', '비터', '크리미'],
         },
         {
           id: 'juenbuck',
@@ -1642,7 +1647,7 @@
           name: '그래스호퍼',
           emoji: '🍊',
           spirit: '리큐르',
-          labels: ['허브', '단맛'],
+          labels: ['허브', '단맛', '크리미'],
           desc: '크렘 드 민트 + 크렘 드 카카오 + 크림. 민트 초콜릿 맛의 디저트 칵테일.',
         },
         {
@@ -1650,7 +1655,7 @@
           name: '골든 캐딜락',
           emoji: '🍊',
           spirit: '리큐르',
-          labels: ['단맛', '과일'],
+          labels: ['단맛', '과일', '크리미'],
           desc: '갈리아노 + 화이트 카카오 리큐르 + 크림. 바닐라·아니스 향의 부드러운 디저트 칵테일.',
         },
         {
@@ -1658,7 +1663,7 @@
           name: '토비 룰',
           emoji: '🍊',
           spirit: '리큐르',
-          labels: ['단맛', '비터'],
+          labels: ['단맛', '비터', '크리미'],
           desc: '아마레또 + 브라운 크렘 드 카카오 + 크림. 아몬드와 초콜릿이 어우러지는 달콤한 디저트 드링크.',
         },
         {
@@ -1835,6 +1840,7 @@
         트로피컬: { bar: '#d4b050', label: '#d4b050' },
         세이보리: { bar: '#80c090', label: '#80c090' },
         탄산: { bar: '#90b8d8', label: '#90b8d8' },
+        크리미: { bar: '#d4b898', label: '#d4b898' },
       };
 
       function calcKeywordScores() {
@@ -1850,61 +1856,66 @@
         return scores;
       }
 
-      /* 취향 유형 판정 */
+      /* 취향 유형 판정 — 레이더 축과 동일한 키워드 묶음, 평균값으로 비교 */
       function getProfile(scores) {
-        const top = Object.entries(scores)
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 3)
-          .map((x) => x[0]);
-        const liked = COCKTAILS.filter((c) => answers[c.id] === 'like');
+        const avg = (keys) => {
+          const sum = keys.reduce(
+            (acc, k) => acc + Math.max(0, scores[k] || 0),
+            0,
+          );
+          return sum / keys.length;
+        };
 
-        if (top.includes('허브') && top.includes('향신료'))
-          return {
+        const profiles = [
+          {
+            score: avg(['허브', '향신료', '세이보리', '견과류']),
             emoji: '🌿',
             name: '<em>허브·향신료</em> 탐험가',
             desc: '복합적인 향에서 즐거움을 찾는 타입. 한 가지 맛으로 설명되지 않는, 마실수록 달라지는 칵테일을 좋아합니다.',
-          };
-        if (top.includes('산미') && top.includes('시트러스'))
-          return {
+          },
+          {
+            score: avg(['산미', '시트러스']),
             emoji: '🍋',
-            name: '<em>새콤한 산미</em> 추구형',
+            name: '<em>새콤·시트러스</em> 추구형',
             desc: '레몬·라임이 이끄는 새콤한 구조를 선호합니다. 단맛보다 산미로 마무리되는 칵테일이 취향.',
-          };
-        if (top.includes('드라이') && top.includes('비터'))
-          return {
+          },
+          {
+            score: avg(['비터', '드라이']),
             emoji: '🥃',
             name: '<em>드라이·비터</em> 정통파',
             desc: '단맛 없이 씁쓸하고 드라이한 정통 클래식을 즐기는 타입. 칵테일 바에서 바텐더에게 신뢰받는 주문 스타일.',
-          };
-        if (top.includes('과일') && top.includes('트로피컬'))
-          return {
+          },
+          {
+            score: avg(['단맛', '트로피컬', '과일']),
             emoji: '🍍',
             name: '<em>트로피컬·과일</em> 러버',
             desc: '밝고 화사한 과일향을 사랑하는 타입. 여름 바닷가가 생각나는 화려한 색감의 칵테일이 딱.',
-          };
-        if (top.includes('단맛'))
-          return {
-            emoji: '🍬',
-            name: '<em>달콤한 향</em> 선호형',
-            desc: '단맛이 중심이 되는 칵테일을 편안하게 즐기는 타입. 너무 강하지 않고 부드럽게 마무리되는 음료를 선호.',
-          };
-        if (top.includes('탄산') && top.includes('시트러스'))
-          return {
+          },
+          {
+            score: avg(['탄산', '시트러스']),
             emoji: '🫧',
             name: '<em>가볍고 상쾌한</em> 롱드링크파',
             desc: '탄산과 시트러스의 조합을 가장 편하게 느끼는 타입. 부담 없이 즐기는 롱드링크가 딱 맞습니다.',
-          };
-        if (top.includes('세이보리') || top.includes('비터'))
-          return {
+          },
+          {
+            score: avg(['세이보리', '비터']),
             emoji: '🍅',
             name: '<em>개성파</em> 세이보리·비터',
             desc: '달지 않고 복잡한 풍미를 즐기는 개성 있는 타입. 일반적이지 않은 칵테일에서 즐거움을 찾습니다.',
+          },
+        ];
+
+        const best = profiles.reduce((a, b) => (b.score > a.score ? b : a));
+
+        if (best.score <= 0) {
+          return {
+            emoji: '🍸',
+            name: '<em>열린 입맛</em>의 탐험가',
+            desc: '특정 취향보다 다양한 칵테일을 고루 즐기는 타입. 어떤 칵테일을 마셔도 나름의 즐거움을 찾을 수 있습니다.',
           };
-        return {
-          emoji: '🍸',
-          name: '<em>열린 입맛</em>의 탐험가',
-          desc: '특정 취향보다 다양한 칵테일을 고루 즐기는 타입. 어떤 칵테일을 마셔도 나름의 즐거움을 찾을 수 있습니다.',
-        };
+        }
+
+        return best;
       }
 
       /* 추천 칵테일 (응답한 것 제외 + REC_POOL 포함, 상위 키워드 기반) */
@@ -2041,8 +2052,8 @@
           norm(['단맛', '트로피컬', '과일']), // 단맛·과일
           norm(['산미', '시트러스']), // 산미
           norm(['비터', '드라이']), // 쓴맛·드라이
-          norm(['견과류']), // 바디·무게감
-          norm(['탄산', '시트러스']), // 청량감
+          norm(['견과류', '크리미']), // 바디·무게감
+          norm(['탄산']), // 청량감
         ];
       }
 
@@ -2092,8 +2103,8 @@
 
         // 키워드 정규화 (0~100)
         const vals = Object.values(scores);
-        const maxVal = Math.max(...vals, 1);
-        const minVal = Math.min(...vals, 0);
+        const maxVal = vals.length ? Math.max(...vals, 1) : 1;
+        const minVal = vals.length ? Math.min(...vals, 0) : 0;
         const normPct = (key) => {
           const v = scores[key] || 0;
           return Math.round(
@@ -2377,8 +2388,6 @@
         });
         const lockScroll = id === 'screen-quiz' || id === 'screen-intro';
         document.body.style.overflow = lockScroll ? 'hidden' : '';
-        document.body.style.position = lockScroll ? 'fixed' : '';
-        document.body.style.width = lockScroll ? '100%' : '';
         document.documentElement.style.overflow = lockScroll ? 'hidden' : '';
         if (lockScroll) {
           document.addEventListener('touchmove', preventTouch, {
