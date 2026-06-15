@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>칵테일 취향 찾기</title>
+<meta name="description" content="대표 칵테일 42종에 반응하고 나의 취향 유형과 맞춤 추천을 받아보세요.">
+<meta property="og:title" content="🍸 나의 칵테일 취향 찾기">
+<meta property="og:description" content="42종 칵테일에 반응하면 취향 레이더와 맞춤 추천까지. 나는 어떤 칵테일파일까?">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hyexjun.github.io/cocktail-taste">
+<meta property="og:image" content="https://hyexjun.github.io/cocktail-taste/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="🍸 나의 칵테일 취향 찾기">
+<meta name="twitter:description" content="42종 칵테일에 반응하면 취향 레이더와 맞춤 추천까지.">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
@@ -396,6 +407,28 @@ body {
   to   { opacity: 1; transform: scale(1); }
 }
 .radar-fill { animation: radarIn .6s cubic-bezier(.4,0,.2,1) both; }
+
+/* ── 저장·공유 버튼 ── */
+.action-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.btn-action {
+  padding: 12px 24px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--txt);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  transition: all .2s;
+}
+.btn-save:hover  { border-color: var(--amber); color: var(--amber-lt); }
+.btn-share:hover { border-color: var(--sage);  color: var(--sage); }
 
 /* ── 반응형 ── */
 @media (max-width: 480px) {
@@ -1022,6 +1055,10 @@ function showResult() {
     </section>` : ''}
 
     <div class="restart-wrap">
+      <div class="action-row">
+        <button class="btn-action btn-save" onclick="saveResult()">📥 이미지 저장</button>
+        <button class="btn-action btn-share" onclick="shareLink()">🔗 링크 공유</button>
+      </div>
       <button class="btn-restart" onclick="restartQuiz()">↩ 다시 하기</button>
     </div>
   `;
@@ -1031,6 +1068,54 @@ function showResult() {
 
 function restartQuiz() {
   show('screen-intro');
+}
+
+/* ── 이미지 저장 ── */
+async function saveResult() {
+  const el = document.getElementById('screen-result');
+  // html2canvas 동적 로드
+  if (!window.html2canvas) {
+    await new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+      s.onload = res; s.onerror = rej;
+      document.head.appendChild(s);
+    });
+  }
+  const btn = document.querySelector('.btn-save');
+  btn.textContent = '⏳ 저장 중...';
+  btn.disabled = true;
+  try {
+    const canvas = await html2canvas(el, {
+      backgroundColor: '#0f0c10',
+      scale: 2,
+      useCORS: true,
+      logging: false,
+    });
+    const a = document.createElement('a');
+    a.download = 'my-cocktail-taste.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  } catch(e) {
+    alert('저장에 실패했습니다. 스크린샷을 이용해주세요.');
+  }
+  btn.textContent = '📥 이미지 저장';
+  btn.disabled = false;
+}
+
+/* ── 링크 공유 ── */
+function shareLink() {
+  const url = 'https://hyexjun.github.io/cocktail-taste';
+  if (navigator.share) {
+    navigator.share({ title: '나의 칵테일 취향 찾기', text: '42종 칵테일에 반응하면 취향 레이더 + 맞춤 추천까지!', url });
+  } else {
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.querySelector('.btn-share');
+      const orig = btn.textContent;
+      btn.textContent = '✅ 링크 복사됨!';
+      setTimeout(() => btn.textContent = orig, 2000);
+    });
+  }
 }
 
 /* ════════════════════════════════════════
