@@ -9,12 +9,12 @@
     <title>칵테일 취향 찾기</title>
     <meta
       name="description"
-      content="대표 칵테일 42종에 반응하고 나의 취향 유형과 맞춤 추천을 받아보세요."
+      content="대표 칵테일 35종에 반응하고 나의 취향 유형과 맞춤 추천을 받아보세요."
     />
     <meta property="og:title" content="🍸 나의 칵테일 취향 찾기" />
     <meta
       property="og:description"
-      content="42종 칵테일에 반응하면 취향 레이더와 맞춤 추천까지. 나는 어떤 칵테일파일까?"
+      content="35종 칵테일에 반응하면 취향 레이더와 맞춤 추천까지. 나는 어떤 칵테일파일까?"
     />
     <meta property="og:type" content="website" />
     <meta
@@ -31,7 +31,7 @@
     <meta name="twitter:title" content="🍸 나의 칵테일 취향 찾기" />
     <meta
       name="twitter:description"
-      content="42종 칵테일에 반응하면 취향 레이더와 맞춤 추천까지."
+      content="35종 칵테일에 반응하면 취향 레이더와 맞춤 추천까지."
     />
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
@@ -241,21 +241,22 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 0 12px;
+        padding: 0;
         gap: 12px;
         flex-shrink: 0;
+        min-height: 35px;
       }
       .progress-wrap {
         flex: 1;
       }
       .progress-label {
-        font-size: 11px;
+        font-size: 12px;
         color: var(--muted);
         letter-spacing: 0.1em;
         margin-bottom: 6px;
       }
       .progress-bar-bg {
-        height: 3px;
+        height: 5px;
         background: var(--surface2);
         border-radius: 100px;
       }
@@ -269,9 +270,9 @@
         background: none;
         border: 1px solid var(--border);
         border-radius: 8px;
-        color: var(--muted);
+        color: #a09ab0;
         font-size: 12px;
-        padding: 6px 12px;
+        padding: 9px 12px;
         font-family: 'Noto Sans KR', sans-serif;
         cursor: pointer;
         white-space: nowrap;
@@ -340,7 +341,7 @@
         padding: 16px 20px 18px;
       }
       .card-spirit {
-        font-size: 10px;
+        font-size: 12px;
         letter-spacing: 0.2em;
         text-transform: uppercase;
         color: var(--amber);
@@ -354,8 +355,13 @@
       }
       .card-desc {
         font-size: 13px;
-        color: var(--muted);
+        color: #b0aabb;
         line-height: 1.7;
+        min-height: calc(13px * 1.7 * 3);
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
         margin-bottom: 12px;
       }
       .card-tags {
@@ -435,6 +441,93 @@
         border-color: rgba(220, 200, 180, 0.25);
       }
 
+      /* 구체 키워드 태그 색상 */
+      .ctag-coffee {
+        background: rgba(120, 80, 40, 0.15);
+        color: #c8946a;
+        border-color: rgba(120, 80, 40, 0.3);
+      }
+      .ctag-ginger {
+        background: rgba(210, 140, 40, 0.12);
+        color: #d4a050;
+        border-color: rgba(210, 140, 40, 0.25);
+      }
+      .ctag-mint {
+        background: rgba(80, 200, 160, 0.12);
+        color: #60c8a8;
+        border-color: rgba(80, 200, 160, 0.25);
+      }
+      .ctag-smoky {
+        background: rgba(100, 90, 80, 0.15);
+        color: #a09080;
+        border-color: rgba(100, 90, 80, 0.3);
+      }
+      .ctag-citrus-fruit {
+        background: rgba(230, 180, 60, 0.12);
+        color: #d4b050;
+        border-color: rgba(230, 180, 60, 0.25);
+      }
+      .ctag-berry {
+        background: rgba(180, 80, 140, 0.12);
+        color: #c870a8;
+        border-color: rgba(180, 80, 140, 0.25);
+      }
+      .ctag-tropical-fruit {
+        background: rgba(220, 160, 60, 0.12);
+        color: #d4a860;
+        border-color: rgba(220, 160, 60, 0.25);
+      }
+      .ctag-vermouth {
+        background: rgba(100, 140, 100, 0.12);
+        color: #80b080;
+        border-color: rgba(100, 140, 100, 0.25);
+      }
+      .ctag-cacao {
+        background: rgba(100, 60, 40, 0.15);
+        color: #b07858;
+        border-color: rgba(100, 60, 40, 0.3);
+      }
+      .ctag-spicy {
+        background: rgba(220, 80, 60, 0.12);
+        color: #e07060;
+        border-color: rgba(220, 80, 60, 0.25);
+      }
+      .ctag-wine {
+        background: rgba(140, 40, 80, 0.12);
+        color: #c06080;
+        border-color: rgba(140, 40, 80, 0.25);
+      }
+      .ctag-tomato {
+        background: rgba(200, 80, 60, 0.12);
+        color: #d07060;
+        border-color: rgba(200, 80, 60, 0.25);
+      }
+      .ctag-almond {
+        background: rgba(180, 150, 100, 0.12);
+        color: #c8a870;
+        border-color: rgba(180, 150, 100, 0.25);
+      }
+      .ctag-coconut {
+        background: rgba(200, 190, 170, 0.12);
+        color: #c8b890;
+        border-color: rgba(200, 190, 170, 0.25);
+      }
+      .ctag-juniper {
+        background: rgba(80, 130, 90, 0.12);
+        color: #70a878;
+        border-color: rgba(80, 130, 90, 0.25);
+      }
+      .ctag-campari {
+        background: rgba(200, 60, 60, 0.12);
+        color: #d07070;
+        border-color: rgba(200, 60, 60, 0.25);
+      }
+      .ctag-neutral {
+        background: rgba(130, 130, 150, 0.1);
+        color: #9898b0;
+        border-color: rgba(130, 130, 150, 0.2);
+      }
+
       /* 버튼 그룹 */
       .action-buttons {
         display: grid;
@@ -452,7 +545,7 @@
         border-radius: 12px;
         border: 1px solid var(--border);
         background: var(--surface);
-        color: var(--muted);
+        color: #a09ab0;
         font-family: 'Noto Sans KR', sans-serif;
         font-size: 11px;
         cursor: pointer;
@@ -477,7 +570,7 @@
         --c: var(--amber-lt);
       }
       .act-btn.skip {
-        --c: var(--muted);
+        --c: #a09ab0;
       }
 
       .act-btn.no:hover {
@@ -619,11 +712,33 @@
         transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
       }
       .ks-score {
-        width: 32px;
+        width: auto;
+        min-width: 32px;
         text-align: right;
         font-size: 12px;
         color: var(--muted);
         flex-shrink: 0;
+        white-space: nowrap;
+      }
+      .ks-score-dis {
+        color: var(--rose);
+      }
+      .ks-count {
+        font-size: 10px;
+        color: var(--muted);
+        opacity: 0.8;
+      }
+      .ks-section-title {
+        font-size: 12px;
+        font-weight: 500;
+        margin-bottom: 10px;
+        letter-spacing: 0.05em;
+      }
+      .ks-liked {
+        color: var(--amber-lt);
+      }
+      .ks-disliked {
+        color: var(--rose);
       }
 
       /* 추천 카드 */
@@ -800,7 +915,7 @@
         border-radius: 100px;
         border: 1px solid var(--border);
         background: var(--surface);
-        color: var(--muted);
+        color: #a09ab0;
         font-size: 13px;
         font-weight: 500;
         font-family: 'Noto Sans KR', sans-serif;
@@ -839,7 +954,7 @@
       <div class="intro-glow">🍸</div>
       <h1>나의 칵테일<br /><em>취향 찾기</em></h1>
       <p>
-        대표 칵테일 42종에 반응해보세요.<br />취향을 분석해 딱 맞는 칵테일을
+        대표 칵테일 35종에 반응해보세요.<br />취향을 분석해 딱 맞는 칵테일을
         추천해드립니다.
       </p>
       <div class="nickname-wrap">
@@ -865,7 +980,7 @@
         <div class="card-btn-wrap">
           <div class="quiz-header">
             <div class="progress-wrap">
-              <div class="progress-label" id="progress-label">0 / 28</div>
+              <div class="progress-label" id="progress-label">0 / 35</div>
               <div class="progress-bar-bg">
                 <div
                   class="progress-bar-fill"
@@ -886,13 +1001,13 @@
               <span class="act-icon">👎</span>별로
             </button>
             <button class="act-btn meh" onclick="answer('meh')">
-              <span class="act-icon">😐</span>무난
+              <span class="act-icon">👌</span>무난
+            </button>
+            <button class="act-btn skip" onclick="answer('skip')">
+              <span class="act-icon">❓</span>모름
             </button>
             <button class="act-btn like" onclick="answer('like')">
               <span class="act-icon">👍</span>좋아
-            </button>
-            <button class="act-btn skip" onclick="answer('skip')">
-              <span class="act-icon">⏭</span>모름
             </button>
           </div>
         </div>
@@ -906,8 +1021,8 @@
 
     <script>
       /* ════════════════════════════════════════
-   DATA: 칵테일 42종 (스피릿별 6종 × 7카테고리)
-   퀴즈 출제용. spirit:'리큐르' 카드는 화면에 "리큐르 (향·플레이버)"로 표시.
+   DATA: 칵테일 35종 (스피릿별 5종 × 7카테고리)
+   퀴즈 출제용. 위스키·진·보드카·럼·데킬라·브랜디·기타(복합 스피릿).
    ※ Firebase 배포 시 Firestore에 저장
 ════════════════════════════════════════ */
       const COCKTAILS = [
@@ -919,8 +1034,9 @@
           emoji: '🥃',
           color: '#1e1508',
           desc: '버번 + 비터스 + 설탕. 위스키 그 자체의 복합향을 즐기는 미니멀한 드링크. 오렌지 껍질 향이 포인트.',
-          tags: ['ctag-bitter', 'ctag-dry', 'ctag-spice'],
-          labels: ['비터', '드라이', '향신료'],
+          tags: ['ctag-bitter', 'ctag-spice'],
+          labels: ['비터', '오렌지'],
+          scores: ['쓴맛', '향신료'],
         },
         {
           id: 'whisky-sour',
@@ -930,7 +1046,8 @@
           color: '#2a1a06',
           desc: '버번 + 레몬주스 + 달걀 흰자. 새콤한 산미와 위스키의 바닐라·카라멜향이 만나는 균형 잡힌 클래식.',
           tags: ['ctag-sour', 'ctag-citrus'],
-          labels: ['산미', '시트러스'],
+          labels: ['사워', '레몬'],
+          scores: ['산미', '시트러스'],
         },
         {
           id: 'manhattan',
@@ -939,19 +1056,11 @@
           emoji: '🥃',
           color: '#1a1206',
           desc: '라이 위스키 + 스위트 베르무트 + 비터스. 진한 체리향과 허브 드라이함이 공존하는 격조 있는 칵테일.',
-          tags: ['ctag-dry', 'ctag-bitter', 'ctag-herb'],
-          labels: ['드라이', '비터', '허브'],
+          tags: ['ctag-bitter', 'ctag-herb'],
+          labels: ['비터', '베르무트'],
+          scores: ['쓴맛', '허브'],
         },
-        {
-          id: 'rusty-nail',
-          spirit: '위스키',
-          name: '러스티 네일',
-          emoji: '🥃',
-          color: '#2a1f0a',
-          desc: '위스키에 드람뷔(꿀·허브·향신료 리큐르)를 블렌드한 클래식. 스모키함 속에 깊은 허브 단맛이 천천히 피어오름.',
-          tags: ['ctag-herb', 'ctag-spice', 'ctag-nutty'],
-          labels: ['허브', '향신료', '견과류'],
-        },
+
         {
           id: 'irish-coffee',
           spirit: '위스키',
@@ -959,8 +1068,9 @@
           emoji: '🥃',
           color: '#140e06',
           desc: '아이리시 위스키 + 커피 + 설탕 + 생크림. 따뜻한 커피 위에 차가운 크림이 떠 있는 핫 칵테일의 대명사.',
-          tags: ['ctag-bitter', 'ctag-sweet', 'ctag-creamy'],
-          labels: ['비터', '단맛', '크리미'],
+          tags: ['ctag-sweet', 'ctag-spice', 'ctag-creamy'],
+          labels: ['스위트', '커피', '크리미'],
+          scores: ['단맛', '향신료', '크리미'],
         },
         {
           id: 'penicillin',
@@ -969,8 +1079,9 @@
           emoji: '🥃',
           color: '#1a1008',
           desc: '스카치 + 아일레이 위스키 + 레몬 + 생강 시럽. 스모키향 위에 생강과 레몬이 층을 이루는 현대 클래식.',
-          tags: ['ctag-spice', 'ctag-sour', 'ctag-herb'],
-          labels: ['향신료', '산미', '허브'],
+          tags: ['ctag-sour', 'ctag-spice'],
+          labels: ['사워', '레몬', '진저', '스모키'],
+          scores: ['산미', '시트러스', '향신료'],
         },
 
         // ── 진 (6) ──
@@ -982,7 +1093,8 @@
           color: '#0e1612',
           desc: '진 + 토닉워터 + 라임. 주니퍼 향의 드라이함과 토닉의 쌉쌀한 탄산. 가장 대중적인 진 입문 칵테일.',
           tags: ['ctag-dry', 'ctag-citrus', 'ctag-fizzy'],
-          labels: ['드라이', '시트러스', '탄산'],
+          labels: ['드라이', '주니퍼', '라임', '탄산'],
+          scores: ['드라이', '시트러스', '탄산'],
         },
         {
           id: 'martini',
@@ -991,8 +1103,9 @@
           emoji: '🌿',
           color: '#0c1018',
           desc: '진 + 드라이 베르무트. 칵테일의 왕. 극도로 드라이하고 차갑고 강렬함. 올리브 하나가 전부인 미니멀리즘.',
-          tags: ['ctag-dry', 'ctag-bitter'],
-          labels: ['드라이', '비터'],
+          tags: ['ctag-dry', 'ctag-herb'],
+          labels: ['드라이', '주니퍼', '베르무트'],
+          scores: ['드라이', '허브'],
         },
         {
           id: 'negroni',
@@ -1001,8 +1114,9 @@
           emoji: '🌿',
           color: '#1a0c0e',
           desc: '진 + 캄파리 + 스위트 베르무트. 쓴맛과 허브향이 강렬하게 충돌. 처음엔 낯설지만 중독성 있는 구조.',
-          tags: ['ctag-bitter', 'ctag-herb', 'ctag-dry'],
-          labels: ['비터', '허브', '드라이'],
+          tags: ['ctag-bitter', 'ctag-herb'],
+          labels: ['비터', '캄파리', '베르무트'],
+          scores: ['쓴맛', '허브'],
         },
         {
           id: 'tom-collins',
@@ -1011,19 +1125,11 @@
           emoji: '🌿',
           color: '#0a1410',
           desc: '진 + 레몬주스 + 설탕 + 소다. 가볍고 상큼한 롱드링크. 진의 향이 레몬 탄산에 녹아드는 여름 칵테일.',
-          tags: ['ctag-citrus', 'ctag-sour', 'ctag-fizzy'],
-          labels: ['시트러스', '산미', '탄산'],
+          tags: ['ctag-sour', 'ctag-citrus', 'ctag-fizzy'],
+          labels: ['사워', '레몬', '탄산'],
+          scores: ['산미', '시트러스', '탄산'],
         },
-        {
-          id: 'gimlet',
-          spirit: '진',
-          name: '김렛',
-          emoji: '🌿',
-          color: '#0a1608',
-          desc: '진 + 라임주스 + 설탕. 마티니만큼 심플하지만 산미가 있어 마시기 훨씬 쉬움. 레이먼드 챈들러의 소설에도 등장하는 클래식.',
-          tags: ['ctag-citrus', 'ctag-sour', 'ctag-dry'],
-          labels: ['시트러스', '산미', '드라이'],
-        },
+
         {
           id: 'singapore-sling',
           spirit: '진',
@@ -1031,8 +1137,9 @@
           emoji: '🌿',
           color: '#1a0c14',
           desc: '진 + 체리 브랜디 + 베네딕틴 + 파인애플 + 라임. 허브·시트러스·과일이 층층이 쌓이는 동남아 클래식.',
-          tags: ['ctag-herb', 'ctag-citrus', 'ctag-fruity'],
-          labels: ['허브', '시트러스', '과일'],
+          tags: ['ctag-sour', 'ctag-fruity'],
+          labels: ['사워', '라임', '체리', '파인애플'],
+          scores: ['산미', '시트러스', '과일'],
         },
 
         // ── 보드카 (6) ──
@@ -1043,8 +1150,9 @@
           emoji: '🍸',
           color: '#0a1208',
           desc: '보드카 + 진저비어 + 라임. 생강의 알싸한 향과 라임 산미. 구리 컵에 마시는 게 국룰인 상쾌한 드링크.',
-          tags: ['ctag-spice', 'ctag-citrus', 'ctag-fizzy'],
-          labels: ['향신료', '시트러스', '탄산'],
+          tags: ['ctag-sour', 'ctag-spice', 'ctag-fizzy'],
+          labels: ['사워', '라임', '진저', '탄산'],
+          scores: ['산미', '시트러스', '향신료', '탄산'],
         },
         {
           id: 'bloody-mary',
@@ -1054,7 +1162,8 @@
           color: '#1a0808',
           desc: '보드카 + 토마토주스 + 핫소스 + 우스터소스. 짭짤하고 매콤한 세이보리 칵테일. 주스라기보단 식사에 가까운 느낌.',
           tags: ['ctag-savory', 'ctag-spice'],
-          labels: ['세이보리', '향신료'],
+          labels: ['짭조름', '토마토', '타바스코'],
+          scores: ['짭조름', '향신료'],
         },
         {
           id: 'espresso-martini',
@@ -1063,8 +1172,9 @@
           emoji: '🍸',
           color: '#100c08',
           desc: '보드카 + 에스프레소 + 커피 리큐르. 진한 커피향과 쓴맛, 달콤한 리큐르가 폼처럼 층을 이루는 세련된 나이트 드링크.',
-          tags: ['ctag-bitter', 'ctag-sweet'],
-          labels: ['비터', '단맛'],
+          tags: ['ctag-bitter', 'ctag-spice'],
+          labels: ['비터', '에스프레소'],
+          scores: ['쓴맛', '향신료'],
         },
         {
           id: 'sex-on-beach',
@@ -1073,8 +1183,9 @@
           emoji: '🍸',
           color: '#1a0e08',
           desc: '보드카 + 피치 슈납스 + 오렌지주스 + 크랜베리. 달달하고 과일향 가득한 대표적인 트로피컬 롱드링크.',
-          tags: ['ctag-fruity', 'ctag-sweet', 'ctag-tropical'],
-          labels: ['과일', '단맛', '트로피컬'],
+          tags: ['ctag-sweet', 'ctag-fruity'],
+          labels: ['스위트', '복숭아', '오렌지'],
+          scores: ['단맛', '과일'],
         },
         {
           id: 'cosmopolitan',
@@ -1083,18 +1194,9 @@
           emoji: '🍸',
           color: '#1a0810',
           desc: '보드카 + 트리플섹 + 크랜베리 + 라임. 핑크빛 외모와 달리 의외로 새콤하고 드라이한 편. 영화 섹스앤더시티 픽.',
-          tags: ['ctag-citrus', 'ctag-sour', 'ctag-fruity'],
-          labels: ['시트러스', '산미', '과일'],
-        },
-        {
-          id: 'white-russian',
-          spirit: '보드카',
-          name: '화이트 러시안',
-          emoji: '🍸',
-          color: '#120e08',
-          desc: '보드카 + 칼루아 + 우유(또는 크림). 커피 리큐르의 달콤한 쓴맛과 크림의 부드러움. 영화 빅 레보스키의 그 칵테일.',
-          tags: ['ctag-sweet', 'ctag-bitter', 'ctag-creamy'],
-          labels: ['단맛', '비터', '크리미'],
+          tags: ['ctag-sour', 'ctag-citrus'],
+          labels: ['사워', '라임', '크랜베리'],
+          scores: ['산미', '시트러스', '과일'],
         },
 
         // ── 럼 (6) ──
@@ -1105,8 +1207,9 @@
           emoji: '🥥',
           color: '#0a180e',
           desc: '럼 + 민트 + 라임 + 설탕 + 소다. 민트의 청량함과 라임 산미가 탄산 속에 펼쳐지는 가장 사랑받는 여름 칵테일.',
-          tags: ['ctag-herb', 'ctag-citrus', 'ctag-fizzy'],
-          labels: ['허브', '시트러스', '탄산'],
+          tags: ['ctag-sour', 'ctag-herb', 'ctag-fizzy'],
+          labels: ['사워', '라임', '민트', '탄산'],
+          scores: ['산미', '시트러스', '허브', '탄산'],
         },
         {
           id: 'pina-colada',
@@ -1115,8 +1218,9 @@
           emoji: '🥥',
           color: '#1a1408',
           desc: '럼 + 코코넛 크림 + 파인애플주스. 달콤한 코코넛과 파인애플의 조합. 열대 해변을 떠올리게 하는 여름의 상징.',
-          tags: ['ctag-tropical', 'ctag-sweet', 'ctag-fruity'],
-          labels: ['트로피컬', '단맛', '과일'],
+          tags: ['ctag-sweet', 'ctag-fruity', 'ctag-creamy'],
+          labels: ['스위트', '코코넛', '파인애플', '크리미'],
+          scores: ['단맛', '과일', '크리미'],
         },
         {
           id: 'cuba-libre',
@@ -1126,7 +1230,8 @@
           color: '#160e06',
           desc: '럼 + 콜라 + 라임. 단순하지만 라임이 더해져 콜라의 단맛이 산뜻하게 정리됨. 세계 어디서나 통하는 하이볼.',
           tags: ['ctag-sweet', 'ctag-citrus', 'ctag-fizzy'],
-          labels: ['단맛', '시트러스', '탄산'],
+          labels: ['스위트', '라임', '콜라', '탄산'],
+          scores: ['단맛', '시트러스', '탄산'],
         },
         {
           id: 'daiquiri',
@@ -1135,8 +1240,9 @@
           emoji: '🥥',
           color: '#0e1a10',
           desc: '화이트럼 + 라임주스 + 설탕. 3가지 재료만으로 완성되는 완벽한 삼위일체. 깔끔한 산미와 럼의 청아한 향.',
-          tags: ['ctag-citrus', 'ctag-sour'],
-          labels: ['시트러스', '산미'],
+          tags: ['ctag-sour', 'ctag-citrus'],
+          labels: ['사워', '라임'],
+          scores: ['산미', '시트러스'],
         },
         {
           id: 'mai-tai',
@@ -1145,18 +1251,9 @@
           emoji: '🥥',
           color: '#1a1008',
           desc: '럼 + 오르자(아몬드시럽) + 오렌지 리큐르 + 라임. 트로피컬 위에 견과류 단맛이 깔리는 하와이안 클래식.',
-          tags: ['ctag-tropical', 'ctag-nutty', 'ctag-citrus'],
-          labels: ['트로피컬', '견과류', '시트러스'],
-        },
-        {
-          id: 'dark-stormy',
-          spirit: '럼',
-          name: '다크 앤 스토미',
-          emoji: '🥥',
-          color: '#100e08',
-          desc: '다크럼 + 진저비어 + 라임. 럼의 당밀·바닐라향과 생강의 매운향이 강하게 충돌. 개성 강한 롱드링크.',
-          tags: ['ctag-spice', 'ctag-sweet', 'ctag-fizzy'],
-          labels: ['향신료', '단맛', '탄산'],
+          tags: ['ctag-sweet', 'ctag-nutty'],
+          labels: ['스위트', '라임', '오르자', '아몬드'],
+          scores: ['단맛', '너티'],
         },
 
         // ── 데킬라 (6) ──
@@ -1167,8 +1264,9 @@
           emoji: '🌵',
           color: '#141a08',
           desc: '데킬라 + 트리플섹 + 라임. 소금 테두리에 시트러스 산미. 세계에서 가장 많이 팔리는 칵테일 중 하나.',
-          tags: ['ctag-citrus', 'ctag-sour'],
-          labels: ['시트러스', '산미'],
+          tags: ['ctag-sour', 'ctag-citrus'],
+          labels: ['사워', '라임'],
+          scores: ['산미', '시트러스'],
         },
         {
           id: 'tequila-sunrise',
@@ -1177,8 +1275,9 @@
           emoji: '🌵',
           color: '#1a0e08',
           desc: '데킬라 + 오렌지주스 + 그레나딘. 붉은 노을빛 층이 아름다운 비주얼. 오렌지와 달콤한 그레나딘의 조합.',
-          tags: ['ctag-fruity', 'ctag-sweet'],
-          labels: ['과일', '단맛'],
+          tags: ['ctag-sweet', 'ctag-fruity'],
+          labels: ['스위트', '오렌지', '그레나딘'],
+          scores: ['단맛', '과일'],
         },
         {
           id: 'paloma',
@@ -1187,8 +1286,9 @@
           emoji: '🌵',
           color: '#0e1810',
           desc: '데킬라 + 자몽주스 + 소다. 쓴 자몽향과 데킬라의 흙내음이 탄산 속에 어우러지는 멕시코 국민 칵테일.',
-          tags: ['ctag-citrus', 'ctag-bitter', 'ctag-fizzy'],
-          labels: ['시트러스', '비터', '탄산'],
+          tags: ['ctag-bitter', 'ctag-citrus', 'ctag-fizzy'],
+          labels: ['비터', '자몽', '탄산'],
+          scores: ['쓴맛', '시트러스', '탄산'],
         },
         {
           id: 'spicy-margarita',
@@ -1197,19 +1297,11 @@
           emoji: '🌵',
           color: '#1a0a08',
           desc: '데킬라 + 라임 + 트리플섹 + 할라페뇨. 마가리타에 매운맛이 더해진 버전. 시트러스 산미 뒤에 매운 여운이 남음.',
-          tags: ['ctag-citrus', 'ctag-sour', 'ctag-spice'],
-          labels: ['시트러스', '산미', '향신료'],
+          tags: ['ctag-sour', 'ctag-spice'],
+          labels: ['사워', '라임', '할라피뇨'],
+          scores: ['산미', '시트러스', '향신료'],
         },
-        {
-          id: 'el-diablo',
-          spirit: '데킬라',
-          name: '엘 디아블로',
-          emoji: '🌵',
-          color: '#1a0810',
-          desc: '데킬라 + 크렘 드 카시스 + 진저비어 + 라임. 달콤한 베리향과 생강의 알싸함이 공존하는 멕시칸 롱드링크.',
-          tags: ['ctag-fruity', 'ctag-spice', 'ctag-citrus'],
-          labels: ['과일', '향신료', '시트러스'],
-        },
+
         {
           id: 'mezcal-negroni',
           spirit: '데킬라',
@@ -1217,70 +1309,67 @@
           emoji: '🌵',
           color: '#1a1008',
           desc: '메스칼 + 캄파리 + 스위트 베르무트. 네그로니에 훈연향이 더해진 버전. 스모키함과 쓴맛이 공존.',
-          tags: ['ctag-bitter', 'ctag-herb', 'ctag-spice'],
-          labels: ['비터', '허브', '향신료'],
+          tags: ['ctag-bitter', 'ctag-herb'],
+          labels: ['비터', '스모키', '캄파리'],
+          scores: ['쓴맛', '허브'],
         },
 
-        // ── 리큐르 (향·플레이버) (6) ──
+        // ── 브랜디 (6) ──
         {
-          id: 'aperol-spritz',
-          spirit: '리큐르',
-          name: '아페롤 스프리츠',
-          emoji: '🍊',
-          color: '#1a0e06',
-          desc: '아페롤 + 프로세코 + 소다. 쌉쌀한 오렌지향과 가벼운 탄산. 이탈리아식 아페리티보(식전주)의 대명사.',
-          tags: ['ctag-bitter', 'ctag-citrus', 'ctag-fizzy'],
-          labels: ['비터', '시트러스', '탄산'],
+          id: 'sidecar',
+          spirit: '브랜디',
+          name: '사이드카',
+          emoji: '🥂',
+          color: '#1a1408',
+          desc: '꼬냑 + 코앵트로 + 레몬주스. 시트러스 산미와 브랜디의 풍부한 과일향이 만나는 프랑스 클래식. 설탕 테두리가 포인트.',
+          tags: ['ctag-sour', 'ctag-citrus'],
+          labels: ['사워', '레몬', '코앵트로'],
+          scores: ['산미', '시트러스'],
         },
         {
-          id: 'amaretto-sour',
-          spirit: '리큐르',
-          name: '아마레또 사워',
-          emoji: '🍊',
-          color: '#1a1006',
-          desc: '아마레또 + 레몬주스 + 달걀 흰자. 아몬드의 진한 단향과 레몬 산미의 대비. 폼이 올라와 부드럽게 마무리.',
-          tags: ['ctag-nutty', 'ctag-sour', 'ctag-citrus'],
-          labels: ['견과류', '산미', '시트러스'],
+          id: 'brandy-alexander',
+          spirit: '브랜디',
+          name: '브랜디 알렉산더',
+          emoji: '🥂',
+          color: '#1a1208',
+          desc: '브랜디 + 크렘 드 카카오 + 생크림. 달콤한 초콜릿향과 크리미한 텍스처. 디저트 칵테일의 클래식.',
+          tags: ['ctag-sweet', 'ctag-nutty', 'ctag-creamy'],
+          labels: ['스위트', '카카오', '크리미'],
+          scores: ['단맛', '너티', '크리미'],
+        },
+
+        {
+          id: 'horses-neck',
+          spirit: '브랜디',
+          name: '호스넥',
+          emoji: '🥂',
+          color: '#1a1206',
+          desc: '브랜디 + 진저에일 + 레몬 껍질. 긴 레몬 껍질을 통째로 컵에 넣는 우아한 롱드링크. 생강의 알싸함이 포인트.',
+          tags: ['ctag-dry', 'ctag-spice', 'ctag-fizzy'],
+          labels: ['드라이', '레몬', '진저', '탄산'],
+          scores: ['드라이', '시트러스', '향신료', '탄산'],
         },
         {
-          id: 'baileys-coffee',
-          spirit: '리큐르',
-          name: '베일리스 커피',
-          emoji: '🍊',
-          color: '#120c08',
-          desc: '베일리스 아이리시 크림 + 커피. 크리미하고 달콤한 아이리시 크림이 커피와 어우러지는 디저트 드링크.',
-          tags: ['ctag-sweet', 'ctag-bitter', 'ctag-creamy'],
-          labels: ['단맛', '비터', '크리미'],
+          id: 'vieux-carre',
+          spirit: '브랜디',
+          name: '비유 카레',
+          emoji: '🥂',
+          color: '#1a1008',
+          desc: '꼬냑 + 라이 위스키 + 스위트 베르무트 + 베네딕틴 + 비터스. 뉴올리언스 태생의 복합 클래식. 허브·비터·향신료가 층층이 쌓임.',
+          tags: ['ctag-bitter', 'ctag-herb'],
+          labels: ['비터', '베네딕틴', '베르무트'],
+          scores: ['쓴맛', '허브'],
         },
         {
-          id: 'juenbuck',
-          spirit: '리큐르',
-          name: '준벅',
-          emoji: '🍊',
-          color: '#0e1a08',
-          desc: '미도리 + 바나나 리큐르 + 코코넛 럼 + 파인애플주스. 달콤한 트로피컬 향이 폭발하는 클럽 대표 칵테일.',
-          tags: ['ctag-fruity', 'ctag-sweet', 'ctag-tropical'],
-          labels: ['과일', '단맛', '트로피컬'],
-        },
-        {
-          id: 'porn-star',
-          spirit: '리큐르',
-          name: '포르노스타 마티니',
-          emoji: '🍊',
-          color: '#1a0e0c',
-          desc: '바닐라 보드카 + 패션프루트 리큐르 + 패션프루트. 달콤하고 향긋한 열대과일향. 샴페인 샷이 함께 나오는 영국 최인기 칵테일.',
-          tags: ['ctag-fruity', 'ctag-sweet', 'ctag-tropical'],
-          labels: ['과일', '단맛', '트로피컬'],
-        },
-        {
-          id: 'midori-sour',
-          spirit: '리큐르',
-          name: '미도리 사워',
-          emoji: '🍊',
-          color: '#0e1a08',
-          desc: '미도리(멜론 리큐르) + 레몬주스 + 달걀 흰자. 형광 초록빛의 비주얼. 달콤한 멜론향에 산미가 더해져 부드럽게 마무리.',
-          tags: ['ctag-fruity', 'ctag-sweet', 'ctag-sour'],
-          labels: ['과일', '단맛', '산미'],
+          id: 'french-connection',
+          spirit: '브랜디',
+          name: '프렌치 커넥션',
+          emoji: '🥂',
+          color: '#1a1206',
+          desc: '꼬냑 + 아마레또. 브랜디의 과일·바닐라향과 아몬드의 단향이 어우러지는 심플한 2성분 클래식.',
+          tags: ['ctag-sweet', 'ctag-nutty'],
+          labels: ['스위트', '아몬드'],
+          scores: ['단맛', '너티'],
         },
 
         // ── 기타 (복합 스피릿) (6) ──
@@ -1291,8 +1380,9 @@
           emoji: '🍹',
           color: '#1a1206',
           desc: '보드카·진·럼·데킬라·트리플섹 + 레몬. 5가지 베이스가 복합적으로 얽히는 강렬한 드링크. 생각보다 강함.',
-          tags: ['ctag-citrus', 'ctag-sour', 'ctag-dry'],
-          labels: ['시트러스', '산미', '드라이'],
+          tags: ['ctag-sweet', 'ctag-citrus', 'ctag-fizzy'],
+          labels: ['스위트', '레몬', '탄산'],
+          scores: ['단맛', '시트러스', '탄산'],
         },
         {
           id: 'mimosa',
@@ -1301,8 +1391,9 @@
           emoji: '🍹',
           color: '#1a1406',
           desc: '샴페인 + 오렌지주스. 기포와 과일향의 가장 단순한 조합. 브런치의 상징이자 입문용 버블리 칵테일.',
-          tags: ['ctag-citrus', 'ctag-fruity', 'ctag-fizzy'],
-          labels: ['시트러스', '과일', '탄산'],
+          tags: ['ctag-sweet', 'ctag-fruity', 'ctag-fizzy'],
+          labels: ['스위트', '오렌지', '탄산'],
+          scores: ['단맛', '과일', '탄산'],
         },
         {
           id: 'french-75',
@@ -1311,8 +1402,9 @@
           emoji: '🍹',
           color: '#0e1018',
           desc: '진 + 레몬주스 + 설탕 + 샴페인. 진의 드라이함과 샴페인 기포가 어우러지는 우아한 클래식.',
-          tags: ['ctag-citrus', 'ctag-sour', 'ctag-fizzy'],
-          labels: ['시트러스', '산미', '탄산'],
+          tags: ['ctag-sour', 'ctag-citrus', 'ctag-fizzy'],
+          labels: ['사워', '레몬', '탄산'],
+          scores: ['산미', '시트러스', '탄산'],
         },
         {
           id: 'bellini',
@@ -1321,19 +1413,11 @@
           emoji: '🍹',
           color: '#1a0e10',
           desc: '샴페인 + 복숭아 퓨레. 이탈리아 베네치아 태생의 우아한 칵테일. 달콤한 복숭아향과 기포의 가벼운 조합.',
-          tags: ['ctag-fruity', 'ctag-sweet', 'ctag-fizzy'],
-          labels: ['과일', '단맛', '탄산'],
+          tags: ['ctag-sweet', 'ctag-fruity', 'ctag-fizzy'],
+          labels: ['스위트', '복숭아', '탄산'],
+          scores: ['단맛', '과일', '탄산'],
         },
-        {
-          id: 'zombie',
-          spirit: '기타',
-          name: '좀비',
-          emoji: '🍹',
-          color: '#1a0a06',
-          desc: '럼 3종 + 패션프루트 + 라임 + 그레나딘. 트로피컬하지만 알코올 도수가 무시무시한 티키 클래식.',
-          tags: ['ctag-tropical', 'ctag-fruity', 'ctag-citrus'],
-          labels: ['트로피컬', '과일', '시트러스'],
-        },
+
         {
           id: 'new-york-sour',
           spirit: '기타',
@@ -1341,8 +1425,9 @@
           emoji: '🍹',
           color: '#1a0808',
           desc: '버번 + 레몬주스 + 설탕 + 레드 와인 플로트. 위스키 사워 위에 레드와인이 층을 이루는 비주얼 칵테일.',
-          tags: ['ctag-sour', 'ctag-citrus', 'ctag-fruity'],
-          labels: ['산미', '시트러스', '과일'],
+          tags: ['ctag-sour', 'ctag-fruity'],
+          labels: ['사워', '레몬', '레드와인'],
+          scores: ['산미', '시트러스', '과일'],
         },
       ];
 
@@ -1365,7 +1450,7 @@
           name: '갓파더',
           emoji: '🥃',
           spirit: '위스키',
-          labels: ['견과류', '단맛', '드라이'],
+          labels: ['너티', '단맛', '드라이'],
           desc: '위스키 + 아마레또. 아몬드 단향이 위스키를 부드럽게 감싸는 2-ingredient 클래식.',
         },
         {
@@ -1373,7 +1458,7 @@
           name: '불바디에',
           emoji: '🥃',
           spirit: '위스키',
-          labels: ['비터', '허브', '드라이'],
+          labels: ['쓴맛', '허브', '드라이'],
           desc: '버번 + 캄파리 + 스위트 베르무트. 네그로니의 위스키 버전. 쓴맛과 허브가 강렬하게 충돌.',
         },
         {
@@ -1381,7 +1466,7 @@
           name: '롭 로이',
           emoji: '🥃',
           spirit: '위스키',
-          labels: ['드라이', '비터', '허브'],
+          labels: ['드라이', '쓴맛', '허브'],
           desc: '스카치 + 스위트 베르무트 + 비터스. 맨해튼의 스카치 버전. 스모키함이 더해진 클래식.',
         },
         {
@@ -1405,8 +1490,16 @@
           name: '스모크드 올드패션드',
           emoji: '🥃',
           spirit: '위스키',
-          labels: ['향신료', '드라이', '비터'],
+          labels: ['향신료', '드라이', '쓴맛'],
           desc: '훈연 처리한 올드패션드. 위스키 본연의 나무·스모키 향이 극대화되는 개성파 변형.',
+        },
+        {
+          id: 'rusty-nail',
+          name: '러스티 네일',
+          emoji: '🥃',
+          spirit: '위스키',
+          labels: ['허브', '향신료', '너티'],
+          desc: '위스키에 드람뷔(꿀·허브·향신료 리큐르)를 블렌드한 클래식. 스모키함 속에 깊은 허브 단맛이 천천히 피어오름.',
         },
 
         // ── 진 ──
@@ -1466,6 +1559,14 @@
           labels: ['시트러스', '허브', '산미'],
           desc: '진 + 코앵트로 + 릴레 블랑 + 레몬 + 압생트. 복합적인 시트러스와 허브향의 해장 칵테일.',
         },
+        {
+          id: 'gimlet',
+          name: '김렛',
+          emoji: '🌿',
+          spirit: '진',
+          labels: ['시트러스', '산미', '드라이'],
+          desc: '진 + 라임주스 + 설탕. 마티니만큼 심플하지만 산미가 있어 마시기 훨씬 쉬움. 레이먼드 챈들러의 소설에도 등장하는 클래식.',
+        },
 
         // ── 보드카 ──
         {
@@ -1497,7 +1598,7 @@
           name: '블랙 러시안',
           emoji: '🍸',
           spirit: '보드카',
-          labels: ['비터', '단맛'],
+          labels: ['쓴맛', '단맛'],
           desc: '보드카 + 칼루아. 화이트 러시안에서 크림을 뺀 버전. 진한 커피향과 쓴맛이 심플하게.',
         },
         {
@@ -1505,7 +1606,7 @@
           name: '갓마더',
           emoji: '🍸',
           spirit: '보드카',
-          labels: ['견과류', '단맛', '드라이'],
+          labels: ['너티', '단맛', '드라이'],
           desc: '보드카 + 아마레또. 갓파더의 보드카 버전. 아몬드 단향이 보드카의 깔끔함과 어우러짐.',
         },
         {
@@ -1524,6 +1625,14 @@
           labels: ['과일', '시트러스', '탄산'],
           desc: '보드카 + 크랜베리주스 + 자몽주스. 달콤한 베리와 쌉쌀한 자몽의 조합.',
         },
+        {
+          id: 'white-russian',
+          name: '화이트 러시안',
+          emoji: '🍸',
+          spirit: '보드카',
+          labels: ['단맛', '쓴맛', '크리미'],
+          desc: '보드카 + 칼루아 + 우유(또는 크림). 커피 리큐르의 달콤한 쓴맛과 크림의 부드러움. 영화 빅 레보스키의 그 칵테일.',
+        },
 
         // ── 럼 ──
         {
@@ -1539,7 +1648,7 @@
           name: '페인킬러',
           emoji: '🥥',
           spirit: '럼',
-          labels: ['트로피컬', '단맛', '과일'],
+          labels: ['과일', '단맛'],
           desc: '럼 + 코코넛 크림 + 파인애플 + 오렌지. 피나 콜라다보다 더 진한 트로피컬 티키 클래식.',
         },
         {
@@ -1547,7 +1656,7 @@
           name: '플랜터스 펀치',
           emoji: '🥥',
           spirit: '럼',
-          labels: ['과일', '트로피컬', '산미'],
+          labels: ['과일', '산미'],
           desc: '다크럼 + 오렌지주스 + 파인애플 + 그레나딘 + 라임. 자메이카 대표 과일 칵테일.',
         },
         {
@@ -1555,7 +1664,7 @@
           name: '허리케인',
           emoji: '🥥',
           spirit: '럼',
-          labels: ['과일', '트로피컬', '단맛'],
+          labels: ['과일', '단맛'],
           desc: '럼 2종 + 패션프루트 시럽 + 오렌지·라임주스. 뉴올리언스 대표 트로피컬 칵테일.',
         },
         {
@@ -1563,7 +1672,7 @@
           name: '정글 버드',
           emoji: '🥥',
           spirit: '럼',
-          labels: ['비터', '트로피컬', '과일'],
+          labels: ['쓴맛', '과일'],
           desc: '다크럼 + 캄파리 + 파인애플 + 라임 + 설탕. 쓴맛과 트로피컬이 충돌하는 말레이시아 태생 클래식.',
         },
         {
@@ -1573,6 +1682,14 @@
           spirit: '럼',
           labels: ['시트러스', '드라이', '산미'],
           desc: '럼 + 자몽주스 + 마라스키노 + 라임. 헤밍웨이가 사랑한 드라이 다이키리. 쌉쌀한 자몽이 포인트.',
+        },
+        {
+          id: 'dark-stormy',
+          name: '다크 앤 스토미',
+          emoji: '🥥',
+          spirit: '럼',
+          labels: ['향신료', '단맛', '탄산'],
+          desc: '다크럼 + 진저비어 + 라임. 럼의 당밀·바닐라향과 생강의 매운향이 강하게 충돌. 개성 강한 롱드링크.',
         },
 
         // ── 데킬라 ──
@@ -1613,7 +1730,7 @@
           name: '오악사칸 올드패션드',
           emoji: '🌵',
           spirit: '데킬라',
-          labels: ['향신료', '드라이', '비터'],
+          labels: ['향신료', '드라이', '쓴맛'],
           desc: '메스칼 + 데킬라 + 아가베 시럽 + 비터스. 훈연향의 올드패션드 변형. 스모키한 개성파.',
         },
         {
@@ -1621,7 +1738,7 @@
           name: '로지타',
           emoji: '🌵',
           spirit: '데킬라',
-          labels: ['비터', '허브', '드라이'],
+          labels: ['쓴맛', '허브', '드라이'],
           desc: '데킬라 + 캄파리 + 드라이/스위트 베르무트 + 비터스. 데킬라 베이스 네그로니 계열.',
         },
         {
@@ -1632,63 +1749,79 @@
           labels: ['시트러스', '탄산', '과일'],
           desc: '데킬라 + 자몽·오렌지·라임주스 + 소금 + 소다. 멕시코 길거리 대표 시트러스 칵테일.',
         },
+        {
+          id: 'el-diablo',
+          name: '엘 디아블로',
+          emoji: '🌵',
+          spirit: '데킬라',
+          labels: ['과일', '향신료', '시트러스'],
+          desc: '데킬라 + 크렘 드 카시스 + 진저비어 + 라임. 달콤한 베리향과 생강의 알싸함이 공존하는 멕시칸 롱드링크.',
+        },
 
-        // ── 리큐르 ──
+        // ── 브랜디 ──
         {
-          id: 'chartreuse-smash',
-          name: '샤르트뢰즈 스매시',
-          emoji: '🍊',
-          spirit: '리큐르',
-          labels: ['허브', '산미', '향신료'],
-          desc: '그린 샤르트뢰즈 + 레몬 + 설탕 + 민트. 130가지 허브 리큐르가 주인공.',
+          id: 'jack-rose',
+          name: '잭 로즈',
+          emoji: '🥂',
+          spirit: '브랜디',
+          labels: ['과일', '산미', '시트러스'],
+          desc: '애플잭(사과 브랜디) + 라임 + 그레나딘. 사과 브랜디의 과일향과 새콤달콤한 조합.',
         },
         {
-          id: 'grasshopper',
-          name: '그래스호퍼',
-          emoji: '🍊',
-          spirit: '리큐르',
-          labels: ['허브', '단맛', '크리미'],
-          desc: '크렘 드 민트 + 크렘 드 카카오 + 크림. 민트 초콜릿 맛의 디저트 칵테일.',
+          id: 'pisco-sour',
+          name: '피스코 사워',
+          emoji: '🥂',
+          spirit: '브랜디',
+          labels: ['산미', '시트러스', '드라이'],
+          desc: '피스코(포도 브랜디) + 레몬주스 + 달걀 흰자 + 비터스. 페루·칠레 대표 칵테일. 폼이 올라오는 새콤한 클래식.',
         },
         {
-          id: 'golden-cadillac',
-          name: '골든 캐딜락',
-          emoji: '🍊',
-          spirit: '리큐르',
-          labels: ['단맛', '과일', '크리미'],
-          desc: '갈리아노 + 화이트 카카오 리큐르 + 크림. 바닐라·아니스 향의 부드러운 디저트 칵테일.',
+          id: 'brandy-smash',
+          name: '브랜디 스매시',
+          emoji: '🥂',
+          spirit: '브랜디',
+          labels: ['허브', '산미', '시트러스'],
+          desc: '브랜디 + 레몬 + 설탕 + 민트. 시트러스 산미와 민트 향이 브랜디의 따뜻함을 감싸는 상큼한 클래식.',
         },
         {
-          id: 'toby-rule',
-          name: '토비 룰',
-          emoji: '🍊',
-          spirit: '리큐르',
-          labels: ['단맛', '비터', '크리미'],
-          desc: '아마레또 + 브라운 크렘 드 카카오 + 크림. 아몬드와 초콜릿이 어우러지는 달콤한 디저트 드링크.',
+          id: 'brandy-crusta',
+          name: '브랜디 크러스타',
+          emoji: '🥂',
+          spirit: '브랜디',
+          labels: ['시트러스', '쓴맛', '드라이'],
+          desc: '브랜디 + 마라스키노 + 코앵트로 + 레몬 + 비터스. 사이드카의 전신. 설탕 결정 테두리가 특징인 19세기 클래식.',
         },
         {
-          id: 'blue-hawaii',
-          name: '블루 하와이',
-          emoji: '🍊',
-          spirit: '리큐르',
-          labels: ['트로피컬', '과일', '단맛'],
-          desc: '보드카 + 블루 퀴라소 + 파인애플 + 레몬. 선명한 파란빛의 트로피컬 칵테일.',
+          id: 'metropolitan',
+          name: '메트로폴리탄',
+          emoji: '🥂',
+          spirit: '브랜디',
+          labels: ['드라이', '쓴맛', '허브'],
+          desc: '브랜디 + 스위트 베르무트 + 설탕 + 비터스. 맨해튼의 브랜디 버전. 묵직하고 복합적인 구조.',
         },
         {
-          id: 'malibu-pineapple',
-          name: '말리부 파인',
-          emoji: '🍊',
-          spirit: '리큐르',
-          labels: ['트로피컬', '단맛', '과일'],
-          desc: '코코넛 럼 + 파인애플주스. 달콤한 코코넛과 트로피컬의 가벼운 조합.',
+          id: 'corpse-reviver-1',
+          name: '코퍼스 리바이버 #1',
+          emoji: '🥂',
+          spirit: '브랜디',
+          labels: ['과일', '드라이', '허브'],
+          desc: '브랜디 + 애플 브랜디 + 스위트 베르무트. 해장 칵테일 시리즈 #1. 복합적인 과일향과 드라이한 구조.',
         },
         {
-          id: 'french-martini',
-          name: '프렌치 마티니',
-          emoji: '🍊',
-          spirit: '리큐르',
-          labels: ['과일', '단맛'],
-          desc: '보드카 + 샹보르(라즈베리 리큐르) + 파인애플주스. 달콤한 베리향의 마티니 스타일.',
+          id: 'pisco-punch',
+          name: '피스코 펀치',
+          emoji: '🥂',
+          spirit: '브랜디',
+          labels: ['과일', '시트러스'],
+          desc: '피스코 + 파인애플 + 레몬 + 설탕. 19세기 샌프란시스코에서 탄생한 과일향 풍부한 클래식.',
+        },
+        {
+          id: 'stinger',
+          name: '스팅어',
+          emoji: '🥂',
+          spirit: '브랜디',
+          labels: ['허브', '드라이'],
+          desc: '브랜디 + 화이트 크렘 드 민트. 딱 2가지 재료로 완성되는 클래식. 브랜디의 따뜻함과 민트의 청량함이 공존.',
         },
 
         // ── 기타 ──
@@ -1705,7 +1838,7 @@
           name: '네그로니 스비글리아토',
           emoji: '🍹',
           spirit: '기타',
-          labels: ['비터', '허브', '탄산'],
+          labels: ['쓴맛', '허브', '탄산'],
           desc: '캄파리 + 스위트 베르무트 + 프로세코. 네그로니에서 진을 스파클링 와인으로 대체한 버전.',
         },
         {
@@ -1713,7 +1846,7 @@
           name: '샴페인 칵테일',
           emoji: '🍹',
           spirit: '기타',
-          labels: ['드라이', '비터', '탄산'],
+          labels: ['드라이', '쓴맛', '탄산'],
           desc: '샴페인 + 각설탕 + 비터스 + 브랜디. 가장 클래식한 스파클링 칵테일. 비터스의 향이 포인트.',
         },
         {
@@ -1721,10 +1854,68 @@
           name: '스프리츠 베네치아노',
           emoji: '🍹',
           spirit: '기타',
-          labels: ['비터', '시트러스', '탄산'],
+          labels: ['쓴맛', '시트러스', '탄산'],
           desc: '아페롤/캄파리 + 프로세코 + 소다. 아페롤 스프리츠의 원형. 비터 오렌지향의 이탈리안 식전주.',
         },
+        {
+          id: 'zombie',
+          name: '좀비',
+          emoji: '🍹',
+          spirit: '기타',
+          labels: ['과일', '시트러스'],
+          desc: '럼 3종 + 패션프루트 + 라임 + 그레나딘. 트로피컬하지만 알코올 도수가 무시무시한 티키 클래식.',
+        },
       ];
+
+      /* ── 라벨 → CSS 클래스 매핑 (전역 상수) ── */
+      const LABEL_CLASS = {
+        // 맛
+        사워: 'ctag-sour',
+        비터: 'ctag-bitter',
+        스위트: 'ctag-sweet',
+        드라이: 'ctag-dry',
+        세이버리: 'ctag-savory',
+        짭조름: 'ctag-savory',
+        타바스코: 'ctag-spicy',
+        // 향·캐릭터 (계산용)
+        시트러스: 'ctag-citrus',
+        허브: 'ctag-herb',
+        향신료: 'ctag-spice',
+        과일: 'ctag-fruity',
+        너티: 'ctag-nutty',
+        탄산: 'ctag-fizzy',
+        크리미: 'ctag-creamy',
+        // 구체 키워드
+        커피: 'ctag-coffee',
+        에스프레소: 'ctag-coffee',
+        진저: 'ctag-ginger',
+        민트: 'ctag-mint',
+        스모키: 'ctag-smoky',
+        레몬: 'ctag-citrus-fruit',
+        라임: 'ctag-citrus-fruit',
+        자몽: 'ctag-citrus-fruit',
+        오렌지: 'ctag-citrus-fruit',
+        코앵트로: 'ctag-citrus-fruit',
+        콜라: 'ctag-neutral',
+        크랜베리: 'ctag-berry',
+        체리: 'ctag-berry',
+        복숭아: 'ctag-tropical-fruit',
+        파인애플: 'ctag-tropical-fruit',
+        그레나딘: 'ctag-tropical-fruit',
+        코코넛: 'ctag-coconut',
+        오르자: 'ctag-almond',
+        아몬드: 'ctag-almond',
+        아마레또: 'ctag-almond',
+        카카오: 'ctag-cacao',
+        베르무트: 'ctag-vermouth',
+        베네딕틴: 'ctag-vermouth',
+        캄파리: 'ctag-campari',
+        주니퍼: 'ctag-juniper',
+        할라피뇨: 'ctag-spicy',
+        스파이스: 'ctag-spicy',
+        토마토: 'ctag-tomato',
+        레드와인: 'ctag-wine',
+      };
 
       /* ════════════════════════════════════════
    STATE
@@ -1770,16 +1961,15 @@
           `${((current + 1) / total) * 100}%`;
         document.getElementById('btn-back').disabled = history.length === 0;
 
-        const tagsHtml = c.tags
-          .map((cls, i) => `<span class="ctag ${cls}">${c.labels[i]}</span>`)
+        const tagsHtml = c.labels
+          .map((lbl) => {
+            const cls = LABEL_CLASS[lbl] || '';
+            return `<span class="ctag ${cls}">${lbl}</span>`;
+          })
           .join('');
 
         const spiritLabel =
-          c.spirit === '리큐르'
-            ? '리큐르 (향·플레이버)'
-            : c.spirit === '기타'
-              ? '기타 (복합 스피릿)'
-              : c.spirit;
+          c.spirit === '기타' ? '기타 (복합 스피릿)' : c.spirit;
 
         document.getElementById('cocktail-card').innerHTML = `
     <div class="card-visual" style="background:${c.color};">
@@ -1826,19 +2016,45 @@
    RESULT LOGIC
 ════════════════════════════════════════ */
 
+      /* ── 키워드별 칵테일 카드 수 캐싱 (레이더 정규화용, 최초 1회 계산) ── */
+      const COCKTAIL_CARD_COUNTS = (() => {
+        const counts = {};
+        COCKTAILS.forEach((c) => {
+          (c.scores || c.labels || []).forEach((l) => {
+            counts[l] = (counts[l] || 0) + 1;
+          });
+        });
+        return counts;
+      })();
+
       /* 취향 키워드별 점수 계산 */
+      const KEYWORD_DISPLAY = {
+        단맛: '스위트',
+        쓴맛: '비터',
+        산미: '사워',
+        드라이: '드라이',
+        짭조름: '세이버리',
+        시트러스: '시트러스',
+        허브: '허브',
+        향신료: '향신료',
+        과일: '과일',
+        너티: '너티',
+        탄산: '스파클링',
+        크리미: '크리미',
+      };
+      const toDisplay = (k) => KEYWORD_DISPLAY[k] || k;
+      const toDisplayBar = toDisplay;
       const KEYWORD_COLORS = {
         허브: { bar: '#7aaa8a', label: 'var(--sage)' },
         향신료: { bar: '#e8b84b', label: 'var(--amber-lt)' },
         시트러스: { bar: '#d4b86a', label: '#d4b86a' },
         산미: { bar: '#b0c870', label: '#b0c870' },
-        견과류: { bar: '#c0946a', label: '#c0946a' },
+        너티: { bar: '#c0946a', label: '#c0946a' },
         드라이: { bar: '#8b90a8', label: 'var(--slate)' },
-        비터: { bar: '#9090c0', label: '#9090c0' },
+        쓴맛: { bar: '#9090c0', label: '#9090c0' },
         단맛: { bar: '#c45c72', label: 'var(--rose)' },
         과일: { bar: '#c0a0e0', label: '#c0a0e0' },
-        트로피컬: { bar: '#d4b050', label: '#d4b050' },
-        세이보리: { bar: '#80c090', label: '#80c090' },
+        짭조름: { bar: '#80c090', label: '#80c090' },
         탄산: { bar: '#90b8d8', label: '#90b8d8' },
         크리미: { bar: '#d4b898', label: '#d4b898' },
       };
@@ -1848,12 +2064,25 @@
         for (const [id, val] of Object.entries(answers)) {
           const c = COCKTAILS.find((x) => x.id === id);
           if (!c) continue;
-          const weight = val === 'like' ? 2 : val === 'meh' ? 0.5 : -1;
-          c.labels.forEach((lbl) => {
+          const weight = val === 'like' ? 2 : val === 'meh' ? 1 : -1;
+          c.scores.forEach((lbl) => {
             scores[lbl] = (scores[lbl] || 0) + weight;
           });
         }
         return scores;
+      }
+
+      function calcKeywordCounts() {
+        const counts = {};
+        for (const [id, val] of Object.entries(answers)) {
+          if (val === 'skip') continue;
+          const c = COCKTAILS.find((x) => x.id === id);
+          if (!c) continue;
+          c.scores.forEach((lbl) => {
+            counts[lbl] = (counts[lbl] || 0) + 1;
+          });
+        }
+        return counts;
       }
 
       /* 취향 유형 판정 — 레이더 축과 동일한 키워드 묶음, 평균값으로 비교 */
@@ -1868,7 +2097,7 @@
 
         const profiles = [
           {
-            score: avg(['허브', '향신료', '세이보리', '견과류']),
+            score: avg(['향신료', '허브', '너티']),
             emoji: '🌿',
             name: '<em>허브·향신료</em> 탐험가',
             desc: '복합적인 향에서 즐거움을 찾는 타입. 한 가지 맛으로 설명되지 않는, 마실수록 달라지는 칵테일을 좋아합니다.',
@@ -1880,13 +2109,13 @@
             desc: '레몬·라임이 이끄는 새콤한 구조를 선호합니다. 단맛보다 산미로 마무리되는 칵테일이 취향.',
           },
           {
-            score: avg(['비터', '드라이']),
+            score: avg(['쓴맛', '드라이']),
             emoji: '🥃',
-            name: '<em>드라이·비터</em> 정통파',
+            name: '<em>드라이·쓴맛</em> 정통파',
             desc: '단맛 없이 씁쓸하고 드라이한 정통 클래식을 즐기는 타입. 칵테일 바에서 바텐더에게 신뢰받는 주문 스타일.',
           },
           {
-            score: avg(['단맛', '트로피컬', '과일']),
+            score: avg(['단맛', '과일']),
             emoji: '🍍',
             name: '<em>트로피컬·과일</em> 러버',
             desc: '밝고 화사한 과일향을 사랑하는 타입. 여름 바닷가가 생각나는 화려한 색감의 칵테일이 딱.',
@@ -1898,10 +2127,10 @@
             desc: '탄산과 시트러스의 조합을 가장 편하게 느끼는 타입. 부담 없이 즐기는 롱드링크가 딱 맞습니다.',
           },
           {
-            score: avg(['세이보리', '비터']),
-            emoji: '🍅',
-            name: '<em>개성파</em> 세이보리·비터',
-            desc: '달지 않고 복잡한 풍미를 즐기는 개성 있는 타입. 일반적이지 않은 칵테일에서 즐거움을 찾습니다.',
+            score: avg(['크리미', '너티']),
+            emoji: '🥛',
+            name: '<em>크리미·너티</em> 무게감 파',
+            desc: '부드럽고 묵직한 텍스처를 즐기는 타입. 크림·아몬드·카카오처럼 풍성한 바디감이 있는 칵테일에서 만족감을 찾습니다.',
           },
         ];
 
@@ -1910,16 +2139,37 @@
         if (best.score <= 0) {
           return {
             emoji: '🍸',
-            name: '<em>열린 입맛</em>의 탐험가',
-            desc: '특정 취향보다 다양한 칵테일을 고루 즐기는 타입. 어떤 칵테일을 마셔도 나름의 즐거움을 찾을 수 있습니다.',
+            name: '<em>아직 미지의</em> 칵테일 탐험가',
+            desc: '아직 잘 모르는 칵테일이 많은 타입. 호불호를 논하기 전에 먼저 다양하게 경험해보는 게 먼저일지도. 일단 유명한 것부터 시작해보세요.',
           };
         }
 
         return best;
       }
 
+      /* all-skip 시 하드코딩 top6 추천 */
+      const DEFAULT_RECS = [
+        { id: 'mojito', reason: '입문용으로 가장 대중적인 클래식' },
+        { id: 'margarita', reason: '세계에서 가장 많이 팔리는 칵테일' },
+        { id: 'pina-colada', reason: '트로피컬의 대명사, 호불호 없는 달콤함' },
+        { id: 'old-fashioned', reason: '위스키 베이스의 클래식 중 클래식' },
+        { id: 'cosmopolitan', reason: '새콤달콤한 균형의 대표 인기작' },
+        {
+          id: 'sex-on-beach',
+          reason: '과일향 가득한 누구나 좋아하는 롱드링크',
+        },
+      ];
+
       /* 추천 칵테일 (응답한 것 제외 + REC_POOL 포함, 상위 키워드 기반) */
       function getRecommendations(scores) {
+        // all-skip: scores가 비어있으면 하드코딩 top6 반환
+        if (Object.keys(scores).length === 0) {
+          return DEFAULT_RECS.map(({ id, reason }) => ({
+            c: COCKTAILS.find((c) => c.id === id),
+            reason,
+          }));
+        }
+
         const answeredIds = new Set(Object.keys(answers));
         const topKws = Object.entries(scores)
           .sort((a, b) => b[1] - a[1])
@@ -1940,7 +2190,7 @@
         const scored = candidates
           .map((c) => {
             let s = 0;
-            c.labels.forEach((lbl) => {
+            (c.scores || c.labels || []).forEach((lbl) => {
               if (topKws.includes(lbl)) s++;
             });
             return { c, s };
@@ -1958,12 +2208,14 @@
         }
 
         return scored.map(({ c }) => {
-          const matchKws = c.labels.filter((l) => topKws.includes(l));
+          const matchKws = (c.scores || c.labels || []).filter((l) =>
+            topKws.includes(l),
+          );
           return {
             c,
             reason:
               matchKws.length > 0
-                ? `<strong>${matchKws.join(' · ')}</strong> 취향과 매칭`
+                ? `<strong>${matchKws.map(toDisplay).join(' · ')}</strong> 취향과 매칭`
                 : '취향 프로필 기반 추천',
           };
         });
@@ -2041,25 +2293,30 @@
 
       /* 취향 6각형: 6축으로 키워드 점수 매핑 */
       function calcTasteRadar(scores) {
+        // 카드 수 기반 정규화: 해당 키워드 달린 카드 수 × 2(좋아 가중치)
+        // cardCounts는 전역 COCKTAIL_CARD_COUNTS 캐시 사용
         const norm = (keys) => {
           const vals = keys.map((k) => Math.max(0, scores[k] || 0));
           const sum = vals.reduce((a, b) => a + b, 0);
-          const maxPossible = keys.length * 4;
+          const maxPossible = keys.reduce(
+            (acc, k) => acc + (COCKTAIL_CARD_COUNTS[k] || 1) * 2,
+            0,
+          );
           return Math.min(1, sum / maxPossible);
         };
         return [
-          norm(['허브', '향신료', '세이보리']), // 향·복합
-          norm(['단맛', '트로피컬', '과일']), // 단맛·과일
-          norm(['산미', '시트러스']), // 산미
-          norm(['비터', '드라이']), // 쓴맛·드라이
-          norm(['견과류', '크리미']), // 바디·무게감
-          norm(['탄산']), // 청량감
+          norm(['산미']), // 산미
+          norm(['시트러스']), // 시트러스
+          norm(['단맛', '과일']), // 달콤·과일
+          norm(['향신료', '허브', '너티']), // 복합향
+          norm(['쓴맛', '드라이']), // 쓴맛·드라이
+          norm(['탄산']), // 스파클링
         ];
       }
 
-      /* 스피릿 6각형: 각 스피릿 칵테일들의 가중 평균 */
+      /* 스피릿 6각형: 좋아=+2, 무난=+1, 별로=-1, skip 제외 */
       function calcSpiritRadar() {
-        const spirits = ['위스키', '진', '보드카', '럼', '데킬라', '리큐르'];
+        const spirits = ['위스키', '진', '보드카', '럼', '데킬라', '브랜디'];
         return spirits.map((sp) => {
           const group = COCKTAILS.filter((c) => c.spirit === sp);
           let total = 0,
@@ -2067,17 +2324,21 @@
           group.forEach((c) => {
             const v = answers[c.id];
             if (v === 'like') {
-              total += 1;
+              total += 2;
               count++;
             } else if (v === 'meh') {
-              total += 0.5;
+              total += 1;
               count++;
             } else if (v === 'no') {
-              total += 0;
+              total += -1;
               count++;
             }
           });
-          return count === 0 ? 0 : total / count;
+          if (count === 0) return 0;
+          // 정규화: 최소(-1*count) ~ 최대(+2*count) → 0~1
+          const min = -1 * count;
+          const max = 2 * count;
+          return (total - min) / (max - min);
         });
       }
       function buildRadarSVG(labels, values, color, size) {
@@ -2112,6 +2373,15 @@
           );
         };
 
+        const SPIRIT_COLOR = {
+          위스키: '#c8944a',
+          진: '#7aaa8a',
+          보드카: '#90b8d8',
+          럼: '#c0946a',
+          데킬라: '#d4b86a',
+          브랜디: '#c07858',
+          기타: '#a09ab0',
+        };
         // 리뷰 테이블
         const liked = COCKTAILS.filter((c) => answers[c.id] === 'like');
         const mehs = COCKTAILS.filter((c) => answers[c.id] === 'meh');
@@ -2120,38 +2390,79 @@
         const reviewHtml = [
           ...liked.map(
             (c) =>
-              `<div class="review-row"><div><div class="rr-name">${c.name}</div><div class="rr-note">${c.spirit}</div></div><span class="rtag-like">👍 좋아함</span></div>`,
+              `<div class="review-row"><div><div class="rr-name">${c.name}</div><div class="rr-note" style="color:${SPIRIT_COLOR[c.spirit] || 'var(--muted)'};">${c.spirit}</div></div><span class="rtag-like">👍 좋아함</span></div>`,
           ),
           ...mehs.map(
             (c) =>
-              `<div class="review-row"><div><div class="rr-name">${c.name}</div><div class="rr-note">${c.spirit}</div></div><span class="rtag-meh">😐 무난</span></div>`,
+              `<div class="review-row"><div><div class="rr-name">${c.name}</div><div class="rr-note" style="color:${SPIRIT_COLOR[c.spirit] || 'var(--muted)'};">${c.spirit}</div></div><span class="rtag-meh">👌 무난</span></div>`,
           ),
           ...nos.map(
             (c) =>
-              `<div class="review-row"><div><div class="rr-name">${c.name}</div><div class="rr-note">${c.spirit}</div></div><span class="rtag-no">👎 별로</span></div>`,
+              `<div class="review-row"><div><div class="rr-name">${c.name}</div><div class="rr-note" style="color:${SPIRIT_COLOR[c.spirit] || 'var(--muted)'};">${c.spirit}</div></div><span class="rtag-no">👎 별로</span></div>`,
           ),
         ].join('');
 
         // 키워드 바
-        const topKeywords = Object.entries(scores)
-          .sort((a, b) => b[1] - a[1])
-          .filter(([, v]) => v > 0)
-          .slice(0, 8);
+        const counts = calcKeywordCounts();
 
-        const kwBarsHtml = topKeywords
+        const likedKeywords = Object.entries(scores)
+          .filter(([, v]) => v > 0)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5);
+
+        const dislikedKeywords = Object.entries(scores)
+          .filter(([, v]) => v < 0)
+          .sort((a, b) => a[1] - b[1])
+          .slice(0, 5);
+
+        const dislikeAbsMax = dislikedKeywords.length
+          ? Math.abs(dislikedKeywords[0][1])
+          : 1;
+        const dislikePct = (key) => {
+          const v = scores[key] || 0;
+          return Math.round(
+            Math.min(1, Math.abs(v) / Math.max(1, dislikeAbsMax)) * 100,
+          );
+        };
+
+        const likedBarsHtml = likedKeywords
           .map(([key]) => {
             const pct = normPct(key);
             const col = KEYWORD_COLORS[key]?.bar || '#a89a7a';
+            const cnt = counts[key] || 0;
             return `
       <div class="ks-row">
-        <span class="ks-label">${key}</span>
+        <span class="ks-label">${toDisplayBar(key)}</span>
         <div class="ks-bar-bg">
           <div class="ks-bar-fill" style="width:${pct}%; background:${col};"></div>
         </div>
-        <span class="ks-score">${pct}</span>
+        <span class="ks-score">${pct}점 <span class="ks-count">(${cnt}건)</span></span>
       </div>`;
           })
           .join('');
+
+        const dislikedBarsHtml = dislikedKeywords
+          .map(([key]) => {
+            const pct = dislikePct(key);
+            const cnt = counts[key] || 0;
+            return `
+      <div class="ks-row">
+        <span class="ks-label">${toDisplayBar(key)}</span>
+        <div class="ks-bar-bg">
+          <div class="ks-bar-fill" style="width:${pct}%; background:var(--rose);"></div>
+        </div>
+        <span class="ks-score ks-score-dis">${pct}점 <span class="ks-count">(${cnt}건)</span></span>
+      </div>`;
+          })
+          .join('');
+
+        const kwBarsHtml =
+          likedKeywords.length === 0 && dislikedKeywords.length === 0
+            ? ''
+            : `
+          ${likedKeywords.length ? `<div class="ks-section-title ks-liked">❤️ 선호 향미 Top ${likedKeywords.length}</div>${likedBarsHtml}` : ''}
+          ${dislikedKeywords.length ? `<div class="ks-section-title ks-disliked" style="margin-top:16px;">🚫 비선호 향미 Top ${dislikedKeywords.length}</div>${dislikedBarsHtml}` : ''}
+        `;
 
         // 추천 카드
         const recHtml = recs
@@ -2169,12 +2480,12 @@
         // ── 레이더 차트 ──
         const tasteVals = calcTasteRadar(scores);
         const tasteLabels = [
-          '향·복합',
-          '단맛·과일',
-          '산미',
-          '쓴맛·드라이',
-          '바디감',
-          '청량감',
+          '사워',
+          '시트러스',
+          '스위트·과일',
+          '향신료',
+          '비터·드라이',
+          '스파클링',
         ];
         const tasteSVG = buildRadarSVG(tasteLabels, tasteVals, '#c9942a', 220);
 
@@ -2185,7 +2496,7 @@
           '보드카',
           '럼',
           '데킬라',
-          '리큐르',
+          '브랜디',
         ];
         const spiritSVG = buildRadarSVG(
           spiritLabels,
@@ -2221,7 +2532,7 @@
       </div>
       <div class="radar-row">
         <div class="radar-block">
-          <div class="radar-block-title">🍋 맛·향 프로필</div>
+          <div class="radar-block-title">🍋 향미 프로필</div>
           ${tasteSVG}
         </div>
         <div class="radar-block">
