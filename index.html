@@ -2512,14 +2512,13 @@
     <div class="shared-banner">
       <div class="sb-label">칵테일 취향 결과 공유</div>
       <div class="sb-name"><em>${nickname}</em>님의 취향 분석 결과</div>
-      <button class="btn-try" onclick="restartQuiz()">🍸 나도 해보기</button>
     </div>`
         : ''
     }
 
     <div class="result-hero">
       <div class="result-badge">${profile.emoji}</div>
-      <div class="result-type-label">나의 칵테일 취향 유형</div>
+      <div class="result-type-label">${isShared ? `${nickname}의 칵테일 취향 유형` : '나의 칵테일 취향 유형'}</div>
       <div class="result-type-name">${profile.name}</div>
       <div class="result-type-desc">${profile.desc}</div>
     </div>
@@ -2581,9 +2580,10 @@
 
     <div class="restart-wrap">
       <div class="action-row">
-        <button class="btn-action btn-save" onclick="saveResult()">📥 이미지 저장</button>
+        ${!isShared ? `<button class="btn-action btn-save" onclick="saveResult()">📥 이미지 저장</button>` : ''}
         ${!isShared ? `<button class="btn-action btn-share" onclick="shareLink()">🔗 결과 공유</button>` : ''}
         ${!isShared ? `<button class="btn-action btn-restart-sm" onclick="restartQuiz()">↩ 다시하기</button>` : ''}
+        ${isShared ? `<button class="btn-action btn-try" onclick="restartQuiz()">🍸 나도 해보기</button>` : ''}
       </div>
     </div>
 
@@ -2636,18 +2636,49 @@
         btn.disabled = false;
       }
 
-      /* ── URL 인코딩 / 디코딩 ── */
+      /* ── URL 인코딩 / 디코딩 (v2: 인덱스 기반, v1 하위 호환) ── */
+
+      // 응답값 → 1문자
+      const VAL_ENC = { like: 'l', meh: 'm', no: 'n' };
+      const VAL_DEC = { l: 'like', m: 'meh', n: 'no' };
+
+      // Base64 → URL-safe Base64 (+ → -, / → _, = 제거)
+      function toUrlSafeB64(b64) {
+        return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      }
+      function fromUrlSafeB64(s) {
+        s = s.replace(/-/g, '+').replace(/_/g, '/');
+        while (s.length % 4) s += '=';
+        return s;
+      }
+
       function encodeResult() {
-        // answers에서 skip 제외하고 압축
-        const data = { n: nickname, a: {} };
-        for (const [id, val] of Object.entries(answers)) {
-          if (val !== 'skip') data.a[id] = val[0]; // 'like'→'l', 'meh'→'m', 'no'→'n'
-        }
-        return btoa(encodeURIComponent(JSON.stringify(data)));
+        const nickB64 = toUrlSafeB64(btoa(encodeURIComponent(nickname)));
+        const ansStr = COCKTAILS.map((c) => {
+          const v = answers[c.id];
+          return VAL_ENC[v] || 's';
+        }).join('');
+        return `v2.${nickB64}.${ansStr}`;
       }
 
       function decodeResult(encoded) {
         try {
+          // v2 형식: v2.<닉네임urlsafeB64>.<35자응답문자열>
+          if (encoded.startsWith('v2.')) {
+            const rest = encoded.slice(3);
+            const dotIdx = rest.lastIndexOf('.');
+            if (dotIdx === -1) return null;
+            const nickB64 = rest.slice(0, dotIdx);
+            const ansStr = rest.slice(dotIdx + 1);
+            const nick = decodeURIComponent(atob(fromUrlSafeB64(nickB64)));
+            const decodedAnswers = {};
+            COCKTAILS.forEach((c, i) => {
+              const ch = ansStr[i];
+              if (ch && VAL_DEC[ch]) decodedAnswers[c.id] = VAL_DEC[ch];
+            });
+            return { nickname: nick, answers: decodedAnswers };
+          }
+          // v1 형식 (구버전 링크 하위 호환)
           const data = JSON.parse(decodeURIComponent(atob(encoded)));
           const decoded = { nickname: data.n, answers: {} };
           for (const [id, v] of Object.entries(data.a)) {
