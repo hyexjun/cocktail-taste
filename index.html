@@ -2016,17 +2016,6 @@
    RESULT LOGIC
 ════════════════════════════════════════ */
 
-      /* ── 키워드별 칵테일 카드 수 캐싱 (레이더 정규화용, 최초 1회 계산) ── */
-      const COCKTAIL_CARD_COUNTS = (() => {
-        const counts = {};
-        COCKTAILS.forEach((c) => {
-          (c.scores || c.labels || []).forEach((l) => {
-            counts[l] = (counts[l] || 0) + 1;
-          });
-        });
-        return counts;
-      })();
-
       /* 취향 키워드별 점수 계산 */
       const KEYWORD_DISPLAY = {
         단맛: '스위트',
@@ -2043,7 +2032,6 @@
         크리미: '크리미',
       };
       const toDisplay = (k) => KEYWORD_DISPLAY[k] || k;
-      const toDisplayBar = toDisplay;
       const KEYWORD_COLORS = {
         허브: { bar: '#7aaa8a', label: 'var(--sage)' },
         향신료: { bar: '#e8b84b', label: 'var(--amber-lt)' },
@@ -2170,44 +2158,20 @@
           }));
         }
 
-        const answeredIds = new Set(Object.keys(answers));
         const topKws = Object.entries(scores)
           .sort((a, b) => b[1] - a[1])
           .slice(0, 4)
           .map((x) => x[0]);
 
-        // 퀴즈 미출제 칵테일(skip 포함) + REC_POOL 전체 후보
-        const quizCandidates = COCKTAILS.filter(
-          (c) => !answeredIds.has(c.id) || answers[c.id] === 'skip',
-        );
-        const poolCandidates = REC_POOL.map((c) => ({
-          ...c,
-          tags: [],
-          isPool: true,
-        }));
-        const candidates = [...quizCandidates, ...poolCandidates];
+        const scoreCandidate = (c) => {
+          let s = 0;
+          (c.scores || c.labels || []).forEach((lbl) => {
+            if (topKws.includes(lbl)) s++;
+          });
+          return s;
+        };
 
-        const scored = candidates
-          .map((c) => {
-            let s = 0;
-            (c.scores || c.labels || []).forEach((lbl) => {
-              if (topKws.includes(lbl)) s++;
-            });
-            return { c, s };
-          })
-          .sort((a, b) => b.s - a.s)
-          .slice(0, 6);
-
-        if (scored.length === 0) {
-          return COCKTAILS.filter((c) => answers[c.id] === 'like')
-            .slice(0, 6)
-            .map((c) => ({
-              c,
-              reason: '이미 좋아하는 칵테일과 비슷한 구조',
-            }));
-        }
-
-        return scored.map(({ c }) => {
+        const toResult = (c) => {
           const matchKws = (c.scores || c.labels || []).filter((l) =>
             topKws.includes(l),
           );
@@ -2218,7 +2182,41 @@
                 ? `<strong>${matchKws.map(toDisplay).join(' · ')}</strong> 취향과 매칭`
                 : '취향 프로필 기반 추천',
           };
-        });
+        };
+
+        // REC_POOL 우선 매칭
+        const poolScored = REC_POOL.map((c) => ({
+          c: { ...c, tags: [], isPool: true },
+          s: scoreCandidate(c),
+        }))
+          .sort((a, b) => b.s - a.s)
+          .slice(0, 6);
+
+        if (poolScored.length >= 6) {
+          return poolScored.map(({ c }) => toResult(c));
+        }
+
+        // REC_POOL 6개 미만 → 퀴즈 skip 카드로 보충
+        const poolIds = new Set(REC_POOL.map((c) => c.id));
+        const skipCandidates = COCKTAILS.filter(
+          (c) => answers[c.id] === 'skip' && !poolIds.has(c.id),
+        );
+        const skipScored = skipCandidates
+          .map((c) => ({ c, s: scoreCandidate(c) }))
+          .sort((a, b) => b.s - a.s);
+
+        const combined = [...poolScored, ...skipScored].slice(0, 6);
+
+        if (combined.length === 0) {
+          return COCKTAILS.filter((c) => answers[c.id] === 'like')
+            .slice(0, 6)
+            .map((c) => ({
+              c,
+              reason: '이미 좋아하는 칵테일과 비슷한 구조',
+            }));
+        }
+
+        return combined.map(({ c }) => toResult(c));
       }
 
       /* ════════════════════════════════════════
@@ -2293,16 +2291,17 @@
 
       /* 취향 6각형: 6축으로 키워드 점수 매핑 */
       function calcTasteRadar(scores) {
-        // 카드 수 기반 정규화: 해당 키워드 달린 카드 수 × 2(좋아 가중치)
-        // cardCounts는 전역 COCKTAIL_CARD_COUNTS 캐시 사용
+        // 실제 응답 기반 정규화: 전체 키워드 중 최고 점수를 기준으로 나눔
+        // → skip이 많아도 응답한 만큼 레이더가 채워지도록 개선
+        const allPositive = Object.values(scores).filter((v) => v > 0);
+        const globalMax = allPositive.length ? Math.max(...allPositive) : 1;
+
         const norm = (keys) => {
-          const vals = keys.map((k) => Math.max(0, scores[k] || 0));
-          const sum = vals.reduce((a, b) => a + b, 0);
-          const maxPossible = keys.reduce(
-            (acc, k) => acc + (COCKTAIL_CARD_COUNTS[k] || 1) * 2,
+          const sum = keys.reduce(
+            (acc, k) => acc + Math.max(0, scores[k] || 0),
             0,
           );
-          return Math.min(1, sum / maxPossible);
+          return Math.min(1, sum / (globalMax * keys.length));
         };
         return [
           norm(['산미']), // 산미
@@ -2362,15 +2361,12 @@
         const profile = getProfile(scores);
         const recs = getRecommendations(scores);
 
-        // 키워드 정규화 (0~100)
+        // 키워드 정규화 (0~100) — 선호 바는 0 기준 고정, 비선호 영향 차단
         const vals = Object.values(scores);
         const maxVal = vals.length ? Math.max(...vals, 1) : 1;
-        const minVal = vals.length ? Math.min(...vals, 0) : 0;
         const normPct = (key) => {
           const v = scores[key] || 0;
-          return Math.round(
-            Math.max(0, (v - minVal) / (maxVal - minVal + 0.01)) * 100,
-          );
+          return Math.round(Math.max(0, v / maxVal) * 100);
         };
 
         const SPIRIT_COLOR = {
@@ -2432,7 +2428,7 @@
             const cnt = counts[key] || 0;
             return `
       <div class="ks-row">
-        <span class="ks-label">${toDisplayBar(key)}</span>
+        <span class="ks-label">${toDisplay(key)}</span>
         <div class="ks-bar-bg">
           <div class="ks-bar-fill" style="width:${pct}%; background:${col};"></div>
         </div>
@@ -2447,7 +2443,7 @@
             const cnt = counts[key] || 0;
             return `
       <div class="ks-row">
-        <span class="ks-label">${toDisplayBar(key)}</span>
+        <span class="ks-label">${toDisplay(key)}</span>
         <div class="ks-bar-bg">
           <div class="ks-bar-fill" style="width:${pct}%; background:var(--rose);"></div>
         </div>
